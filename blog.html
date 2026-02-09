@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Read the latest articles on natural health, herbal remedies, and wellness tips from Ash Meganab's experts.">
+  <title>Blog | Ash Meganab - Natural Herbal Solutions</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="Assets/CSS/main.css">
+  <style>
+    .blog-layout { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; padding: 3rem 0; }
+    .blog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .blog-sidebar { position: sticky; top: 100px; height: fit-content; }
+    .sidebar-widget { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #e9ecef; }
+    .sidebar-widget:last-child { border-bottom: none; }
+    .sidebar-widget h4 { font-family: var(--font-primary); font-size: 1rem; font-weight: 600; color: var(--color-gray-800); margin-bottom: 1rem; }
+    .search-widget input { width: 100%; padding: 0.75rem; border: 1px solid #dee2e6; border-radius: 8px; font-size: 0.875rem; }
+    .search-widget input:focus { outline: none; border-color: var(--color-primary); }
+    .category-widget li { margin-bottom: 0.5rem; }
+    .category-widget a { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--color-gray-600); }
+    .category-widget a:hover { color: var(--color-primary); }
+    .category-widget span { color: var(--color-gray-400); }
+    .recent-post-item { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    .recent-post-item:last-child { margin-bottom: 0; }
+    .recent-post-thumb { width: 70px; height: 70px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .recent-post-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .recent-post-info h5 { font-family: var(--font-primary); font-size: 0.875rem; font-weight: 500; color: var(--color-gray-800); margin-bottom: 0.25rem; }
+    .recent-post-info span { font-size: 0.75rem; color: var(--color-gray-500); }
+    @media (max-width: 992px) { .blog-layout { grid-template-columns: 1fr; } .blog-sidebar { position: static; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+    @media (max-width: 768px) { .blog-sidebar { grid-template-columns: 1fr; } .blog-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="Assets/Images/ashmeganablogo.JPG" alt="Ash Meganab Logo">
+        <span>Ash Meganab</span>
+      </a>
+      
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <div class="nav-item nav-item-has-children">
+          <a href="shop.html" class="nav-link">Categories</a>
+          <div class="nav-dropdown">
+            <a href="shop.html?category=cardionab" class="nav-dropdown-item">CardioNab</a>
+            <a href="shop.html?category=dianab" class="nav-dropdown-item">DiaoNab</a>
+            <a href="shop.html?category=prostanab" class="nav-dropdown-item">ProstaNab</a>
+            <a href="shop.html?category=nabdol" class="nav-dropdown-item">Nabdol</a>
+          </div>
+        </div>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="blog.html" class="nav-link active">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      
+      <div class="header-actions">
+        <button class="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <div class="mobile-menu-overlay"></div>
+  
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <h1>Our Blog</h1>
+      <p>Latest articles on natural health and wellness</p>
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <span>Blog</span>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Blog Section -->
+  <section class="container">
+    <div class="blog-layout">
+      <div class="blog-grid" id="blog-grid"></div>
+      
+      <aside class="blog-sidebar">
+        <div class="sidebar-widget">
+          <h4>Search</h4>
+          <div class="search-widget">
+            <input type="text" placeholder="Search articles...">
+          </div>
+        </div>
+        
+        <div class="sidebar-widget">
+          <h4>Categories</h4>
+          <ul class="category-widget">
+            <li><a href="#">Health Tips <span>(12)</span></a></li>
+            <li><a href="#">Wellness <span>(8)</span></a></li>
+            <li><a href="#">Men's Health <span>(5)</span></a></li>
+            <li><a href="#">Pain Relief <span>(4)</span></a></li>
+            <li><a href="#">Education <span>(6)</span></a></li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-widget">
+          <h4>Recent Posts</h4>
+          <div class="recent-post-item">
+            <div class="recent-post-thumb">
+              <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=100&h=100&fit=crop" alt="Recent Post">
+            </div>
+            <div class="recent-post-info">
+              <h5>The Benefits of Natural Herbs for Heart Health</h5>
+              <span>Jan 15, 2026</span>
+            </div>
+          </div>
+          <div class="recent-post-item">
+            <div class="recent-post-thumb">
+              <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=100&h=100&fit=crop" alt="Recent Post">
+            </div>
+            <div class="recent-post-info">
+              <h5>Managing Blood Sugar Naturally</h5>
+              <span>Jan 12, 2026</span>
+            </div>
+          </div>
+          <div class="recent-post-item">
+            <div class="recent-post-thumb">
+              <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=100&h=100&fit=crop" alt="Recent Post">
+            </div>
+            <div class="recent-post-info">
+              <h5>Understanding Prostate Health</h5>
+              <span>Jan 10, 2026</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+  
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter-container">
+        <h2>Join Our Wellness Community</h2>
+        <p>Subscribe to receive health tips and exclusive offers</p>
+        <form class="newsletter-form-inline" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+          <input type="email" placeholder="Enter your email address" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-cta">
+      <div class="footer-cta-content">
+        <div class="footer-cta-text">
+          <h3>Ready to Start Your Wellness Journey?</h3>
+          <p>Explore our range of natural herbal supplements.</p>
+        </div>
+        <a href="shop.html" class="btn btn-accent btn-lg">Shop Now</a>
+      </div>
+    </div>
+    
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="footer-logo">
+          <img src="Assets/Images/ashmeganablogo.JPG" alt="Ash Meganab Logo">
+          <span class="footer-logo-text">Ash Meganab</span>
+        </div>
+        <p>Your trusted source for premium natural herbal supplements.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="shop.html" class="footer-link">Shop</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
+          <li><a href="blog.html" class="footer-link">Blog</a></li>
+          <li><a href="contact.html" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Categories</h4>
+        <ul class="footer-links">
+          <li><a href="shop.html?category=cardionab" class="footer-link">CardioNab</a></li>
+          <li><a href="shop.html?category=dianab" class="footer-link">DiaoNab</a></li>
+          <li><a href="shop.html?category=prostanab" class="footer-link">ProstaNab</a></li>
+          <li><a href="shop.html?category=nabdol" class="footer-link">Nabdol</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Customer Support</h4>
+        <ul class="footer-links">
+          <li><a href="#" class="footer-link">FAQs</a></li>
+          <li><a href="#" class="footer-link">Shipping Info</a></li>
+          <li><a href="#" class="footer-link">Returns Policy</a></li>
+          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <form class="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="Your email address">
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p class="footer-copyright">© 2026 Ash Meganab. All Rights Reserved.</p>
+        <div class="footer-legal">
+          <a href="#" class="footer-legal-link">Privacy Policy</a>
+          <a href="#" class="footer-legal-link">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- JavaScript -->
+  <script type="module" src="Assets/JS/main.js"></script>
+  <script>
+    const blogPosts = [
+      { id: 1, title: 'The Benefits of Natural Herbs for Heart Health', excerpt: 'Discover how natural herbs can support cardiovascular health and what the latest research says about herbal remedies.', category: 'Health Tips', author: 'Dr. Sarah Mitchell', date: '2026-01-15', image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=400&fit=crop', readTime: '5 min read' },
+      { id: 2, title: 'Managing Blood Sugar Naturally: A Complete Guide', excerpt: 'Learn about natural approaches to blood sugar management and how to incorporate them into your daily routine.', category: 'Wellness', author: 'Michael Chen', date: '2026-01-12', image: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=600&h=400&fit=crop', readTime: '7 min read' },
+      { id: 3, title: 'Understanding Prostate Health: What Every Man Should Know', excerpt: 'Important information about prostate health and natural supplements that can support optimal function.', category: "Men's Health", author: 'Dr. James Wilson', date: '2026-01-10', image: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=600&h=400&fit=crop', readTime: '6 min read' },
+      { id: 4, title: 'Natural Approaches to Pain Management', excerpt: 'Explore natural alternatives for managing chronic pain and improving quality of life.', category: 'Pain Relief', author: 'Dr. Emily Roberts', date: '2026-01-08', image: 'https://images.unsplash.com/photo-1550572017-4e6c8c9f8e0c?w=600&h=400&fit=crop', readTime: '8 min read' },
+      { id: 5, title: 'The Science Behind Herbal Supplements', excerpt: 'Understanding how herbal supplements work and what to look for when choosing quality products.', category: 'Education', author: 'Dr. Robert Hayes', date: '2026-01-05', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&h=400&fit=crop', readTime: '6 min read' },
+      { id: 6, title: 'Holistic Approaches to Joint Health', excerpt: 'Comprehensive strategies for maintaining healthy joints and mobility as we age.', category: 'Wellness', author: 'Dr. Lisa Park', date: '2026-01-03', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=400&fit=crop', readTime: '7 min read' }
+    ];
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const grid = document.getElementById('blog-grid');
+      if (grid) {
+        grid.innerHTML = blogPosts.map(post => `
+          <article class="blog-card">
+            <div class="blog-card-image">
+              <img src="${post.image}" alt="${post.title}" loading="lazy">
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-meta">
+                <span class="blog-category">${post.category}</span>
+                <span>${post.readTime}</span>
+              </div>
+              <h3><a href="#">${post.title}</a></h3>
+              <p>${post.excerpt}</p>
+              <a href="#" class="blog-read-more">Read More <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+            </div>
+          </article>
+        `).join('');
+      }
+    });
+  </script>
+</body>
+</html>

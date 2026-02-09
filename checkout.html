@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete your purchase at Ash Meganab - Secure checkout for natural herbal supplements">
+  <title>Checkout | Ash Meganab - Natural Herbal Solutions</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="Assets/CSS/main.css">
+  <style>
+    .checkout-layout { display: grid; grid-template-columns: 1fr 400px; gap: 2rem; padding: 3rem 0; }
+    .checkout-form h2 { font-family: var(--font-secondary); font-size: 1.5rem; margin-bottom: 1rem; }
+    .checkout-section { background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-md); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .checkout-section h3 { font-family: var(--font-primary); font-size: 1.125rem; font-weight: 600; color: var(--color-gray-800); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-gray-200); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-gray-700); margin-bottom: 0.25rem; }
+    .form-group label .required { color: var(--color-error); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--color-gray-300); border-radius: 8px; font-size: 1rem; color: var(--color-gray-800); transition: all 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1); }
+    .form-group .error-message { font-size: 0.75rem; color: var(--color-error); margin-top: 0.25rem; display: none; }
+    .form-group.error input, .form-group.error select { border-color: var(--color-error); }
+    .form-group.error .error-message { display: block; }
+    .order-summary { background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-md); padding: 1.5rem; height: fit-content; position: sticky; top: 100px; }
+    .order-summary h3 { font-family: var(--font-secondary); font-size: 1.25rem; margin-bottom: 1rem; }
+    .order-items-list { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-gray-200); }
+    .checkout-order-item { display: flex; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--color-gray-100); }
+    .checkout-order-item:last-child { border-bottom: none; }
+    .checkout-order-image { width: 60px; height: 60px; border-radius: 8px; overflow: hidden; }
+    .checkout-order-image img { width: 100%; height: 100%; object-fit: cover; }
+    .checkout-order-info { flex: 1; }
+    .checkout-order-info h4 { font-family: var(--font-primary); font-size: 0.875rem; font-weight: 500; color: var(--color-gray-800); }
+    .checkout-order-qty { font-size: 0.75rem; color: var(--color-gray-500); }
+    .checkout-order-price { font-weight: 600; color: var(--color-gray-800); }
+    .order-summary-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem; color: var(--color-gray-600); }
+    .order-summary-row.total { font-size: 1rem; font-weight: 700; color: var(--color-gray-900); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--color-gray-200); }
+    .payment-methods-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .payment-method { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--color-gray-300); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+    .payment-method:hover { border-color: var(--color-primary); }
+    .payment-method input { accent-color: var(--color-primary); }
+    .payment-method label { font-size: 0.875rem; color: var(--color-gray-700); cursor: pointer; }
+    .place-order-btn { width: 100%; margin-top: 1.5rem; padding: 1rem; font-size: 1rem; }
+    .country-display { padding: 0.75rem; background: var(--color-gray-100); border-radius: 8px; color: var(--color-gray-800); font-weight: 500; }
+    @media (max-width: 992px) { .checkout-layout { grid-template-columns: 1fr; } .order-summary { position: static; } }
+    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="Assets/Images/ashmeganablogo.JPG" alt="Ash Meganab Logo">
+        <span>Ash Meganab</span>
+      </a>
+      
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <div class="nav-item nav-item-has-children">
+          <a href="shop.html" class="nav-link">Categories</a>
+          <div class="nav-dropdown">
+            <a href="shop.html?category=cardionab" class="nav-dropdown-item">CardioNab</a>
+            <a href="shop.html?category=dianab" class="nav-dropdown-item">DiaoNab</a>
+            <a href="shop.html?category=prostanab" class="nav-dropdown-item">ProstaNab</a>
+            <a href="shop.html?category=nabdol" class="nav-dropdown-item">Nabdol</a>
+          </div>
+        </div>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      
+      <div class="header-actions">
+        <a href="cart.html" class="cart-btn" aria-label="Shopping Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <button class="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <div class="mobile-menu-overlay"></div>
+  
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <h1>Checkout</h1>
+      <p>Complete your order securely</p>
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="cart.html">Cart</a>
+        <span>/</span>
+        <span>Checkout</span>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Checkout Section -->
+  <section class="container">
+    <div class="checkout-layout">
+      <form class="checkout-form" id="checkout-form">
+        <!-- Shipping Information -->
+        <div class="checkout-section">
+          <h3>Shipping Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input type="text" id="firstName" name="firstName" required>
+              <span class="error-message">First name is required</span>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name <span class="required">*</span></label>
+              <input type="text" id="lastName" name="lastName" required>
+              <span class="error-message">Last name is required</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number <span class="required">*</span></label>
+              <input type="tel" id="phone" name="phone" required>
+              <span class="error-message">Phone number is required</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address">Street Address <span class="required">*</span></label>
+            <input type="text" id="address" name="address" required>
+            <span class="error-message">Address is required</span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City <span class="required">*</span></label>
+              <input type="text" id="city" name="city" required>
+              <span class="error-message">City is required</span>
+            </div>
+            <div class="form-group">
+              <label for="zip">Postal Code <span class="required">*</span></label>
+              <input type="text" id="zip" name="zip" required>
+              <span class="error-message">Postal code is required</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Country <span class="required">*</span></label>
+            <div class="country-display">Ghana</div>
+            <input type="hidden" id="country" name="country" value="Ghana">
+          </div>
+        </div>
+        
+        <!-- Shipping Method -->
+        <div class="checkout-section">
+          <h3>Shipping Method</h3>
+          <div class="payment-methods-list">
+            <label class="payment-method">
+              <input type="radio" name="shipping" value="standard" checked>
+              <span>Standard Shipping (5-7 business days)</span>
+              <span style="margin-left: auto; font-weight: 600;">GH₵120.00</span>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="shipping" value="express">
+              <span>Express Shipping (2-3 business days)</span>
+              <span style="margin-left: auto; font-weight: 600;">GH₵200.00</span>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="shipping" value="free">
+              <span>Free Shipping (Orders over GH₵1,125)</span>
+              <span style="margin-left: auto; font-weight: 600;">FREE</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Payment Method -->
+        <div class="checkout-section">
+          <h3>Payment Method</h3>
+          <div class="payment-methods-list">
+            <label class="payment-method">
+              <input type="radio" name="payment" value="card" checked>
+              <span>Credit/Debit Card</span>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="payment" value="mobilemoney">
+              <span>Mobile Money (MTN, Vodafone, AirtelTigo)</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Order Notes -->
+        <div class="checkout-section">
+          <h3>Order Notes (Optional)</h3>
+          <div class="form-group">
+            <label for="notes">Special Instructions</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Any special delivery instructions or notes about your order..."></textarea>
+          </div>
+        </div>
+      </form>
+      
+      <!-- Order Summary -->
+      <aside class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="order-items-list" id="checkout-order-items">
+          <!-- Order items will be rendered here -->
+        </div>
+        <div class="order-summary-row">
+          <span>Subtotal</span>
+          <span id="order-subtotal">GH₵0.00</span>
+        </div>
+        <div class="order-summary-row">
+          <span>Shipping</span>
+          <span id="order-shipping">GH₵120.00</span>
+        </div>
+        <div class="order-summary-row total">
+          <span>Total</span>
+          <span id="order-total">GH₵0.00</span>
+        </div>
+        <button type="submit" form="checkout-form" class="btn btn-primary place-order-btn">Place Order</button>
+        <p style="font-size: 0.75rem; color: var(--color-gray-500); text-align: center; margin-top: 1rem;">Your personal data will be used to process your order and support your experience on our website.</p>
+      </aside>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p class="footer-copyright">© 2026 Ash Meganab. All Rights Reserved.</p>
+        <div class="footer-legal">
+          <a href="#" class="footer-legal-link">Privacy Policy</a>
+          <a href="#" class="footer-legal-link">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- JavaScript -->
+  <script type="module" src="Assets/JS/main.js"></script>
+</body>
+</html>
