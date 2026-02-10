@@ -256,16 +256,11 @@
               btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const productId = this.getAttribute('data-product-id');
-                alert('Adding product to cart: ' + productId);
                 const product = ProductService.getById(productId);
                 if (product) {
-                  alert('Product found: ' + product.name + ' - ₵' + product.price);
                   const orderItem = ProductService.formatForStorage(product, 1);
                   StorageUtils.set('ashmeg_pending_order', orderItem);
-                  alert('Product added! Redirecting to checkout...');
                   window.location.href = 'checkout.html';
-                } else {
-                  alert('Product not found!');
                 }
               });
             });

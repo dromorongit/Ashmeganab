@@ -350,6 +350,18 @@ const Checkout = {
   },
 
   /**
+   * Initialize clear order button
+   */
+  initClearOrder() {
+    const clearBtn = DOMUtils.getById('clear-order-btn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        this.clearOrder();
+      });
+    }
+  },
+
+  /**
    * Submit order via WhatsApp
    * @param {Object} customerData
    */
