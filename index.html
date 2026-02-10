@@ -370,10 +370,23 @@
               <span class="product-category">${product.categoryName}</span>
               <h3 class="product-name">${product.name}</h3>
               <p class="product-price">${CurrencyUtils.format(product.price)}</p>
-              <a href="checkout.html?product=${product.id}" class="btn btn-primary product-btn">Place Order</a>
+              <button class="btn btn-primary product-btn place-order-btn" data-product-id="${product.id}">Place Order</button>
             </div>
           `;
           bestsellersGrid.appendChild(card);
+        });
+        
+        // Add click handlers for Place Order buttons
+        document.querySelectorAll('.place-order-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            const product = ProductService.getById(productId);
+            if (product) {
+              const orderItem = ProductService.formatForStorage(product, 1);
+              StorageUtils.set('ashmeg_pending_order', orderItem);
+              window.location.href = 'checkout.html';
+            }
+          });
         });
       }
     });

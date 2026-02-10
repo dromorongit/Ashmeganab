@@ -297,7 +297,7 @@ const App = {
       return;
     }
 
-    // Store in localStorage
+    // Store in localStorage as pending order
     const orderItem = ProductService.formatForStorage(product, 1);
     StorageUtils.set('ashmeg_pending_order', orderItem);
 

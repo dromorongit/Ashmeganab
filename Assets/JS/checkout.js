@@ -46,6 +46,23 @@ const Checkout = {
         quantity: quickOrder.quantity,
         subtotal: quickOrder.productPrice * quickOrder.quantity
       }];
+    } else {
+      // Check URL parameters for product
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('product');
+      
+      if (productId) {
+        const product = ProductService.getById(productId);
+        if (product) {
+          const orderItem = ProductService.formatForStorage(product, 1);
+          this.items = [orderItem];
+          StorageUtils.set('ashmeg_pending_order', orderItem);
+        } else {
+          this.items = [];
+        }
+      } else {
+        this.items = [];
+      }
     }
 
     // If no items, create empty state
@@ -333,10 +350,10 @@ const Checkout = {
   },
 
   /**
-   * Submit order
+   * Submit order via WhatsApp
    * @param {Object} customerData
    */
-  async submitOrder(customerData) {
+  submitOrder(customerData) {
     const submitBtn = DOMUtils.getById('place-order-btn');
     const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
     const spinner = submitBtn ? submitBtn.querySelector('.spinner') : null;
@@ -344,39 +361,94 @@ const Checkout = {
     // Show loading state
     if (submitBtn) {
       submitBtn.disabled = true;
-      if (btnText) btnText.textContent = 'Processing...';
+      if (btnText) btnText.textContent = 'Opening WhatsApp...';
       if (spinner) spinner.style.display = 'inline-block';
     }
 
     // Calculate final total
     const finalTotal = this.calculateTotal();
 
-    // Prepare order data
-    const orderData = {
-      orderId: 'ORD-' + generateId().toUpperCase(),
-      items: this.items,
-      customer: customerData,
-      total: finalTotal,
-      currency: CurrencyUtils.code,
-      orderDate: new Date().toISOString(),
-      status: 'pending'
-    };
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Store completed order
-    const existingOrders = StorageUtils.get('ashmeg_orders', []);
-    existingOrders.push(orderData);
-    StorageUtils.set('ashmeg_orders', existingOrders);
-
-    // Show success
-    this.showSuccessMessage(orderData);
+    // Format order message for WhatsApp
+    let orderMessage = `*New Order - Ash Meganab Herbal*%0A%0A`;
+    orderMessage += `*Customer Details:*%0A`;
+    orderMessage += `Name: ${customerData.fullName}%0A`;
+    orderMessage += `Phone: ${customerData.phone}%0A`;
+    if (customerData.email) {
+      orderMessage += `Email: ${customerData.email}%0A`;
+    }
+    orderMessage += `Address: ${customerData.address}%0A`;
+    orderMessage += `City: ${customerData.city}%0A`;
+    if (customerData.region) {
+      orderMessage += `Region: ${customerData.region}%0A`;
+    }
+    if (customerData.notes) {
+      orderMessage += `Notes: ${customerData.notes}%0A`;
+    }
+    orderMessage += `%0A*Order Details:*%0A`;
     
+    this.items.forEach((item, index) => {
+      orderMessage += `${index + 1}. ${item.productName}%0A`;
+      orderMessage += `   Price: ₵${item.productPrice}%0A`;
+      orderMessage += `   Quantity: ${item.quantity}%0A`;
+      orderMessage += `   Subtotal: ₵${item.subtotal}%0A%0A`;
+    });
+    
+    orderMessage += `*Total: ₵${finalTotal}*%0A`;
+    orderMessage += `%0AOrder Date: ${new Date().toLocaleDateString()}`;
+
+    // WhatsApp URL
+    const whatsappUrl = `https://wa.me/233548551667?text=${orderMessage}`;
+
+    // Open WhatsApp in new tab
+    window.open(whatsappUrl, '_blank');
+
+    // Reset button
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      if (btnText) btnText.textContent = 'Place Order';
+      if (spinner) spinner.style.display = 'none';
+    }
+
     // Clear pending order
     StorageUtils.remove('ashmeg_pending_order');
     StorageUtils.remove('ashmeg_quick_order');
     this.items = [];
+
+    // Show confirmation
+    this.showWhatsAppConfirmation();
+  },
+
+  /**
+   * Show WhatsApp order confirmation
+   */
+  showWhatsAppConfirmation() {
+    const formContainer = document.getElementById('checkout-form-container');
+    const successContainer = document.getElementById('success-container');
+    
+    if (!successContainer) return;
+    
+    // Update success content for WhatsApp
+    const orderIdElement = document.getElementById('success-order-id');
+    const orderTotalElement = document.getElementById('success-order-total');
+    
+    if (orderIdElement) orderIdElement.textContent = 'WHATSAPP';
+    if (orderTotalElement) orderTotalElement.textContent = 'Check WhatsApp';
+    
+    const successTitle = successContainer.querySelector('.success-title');
+    const successMessage = successContainer.querySelector('.success-message');
+    
+    if (successTitle) successTitle.textContent = 'Opening WhatsApp...';
+    if (successMessage) {
+      successMessage.innerHTML = `Your order details are being prepared.<br><br>
+        <strong>Please complete your order in the WhatsApp chat window.</strong><br><br>
+        If WhatsApp doesn't open automatically, <a href="https://wa.me/233548551667" target="_blank">click here</a> to open WhatsApp.`;
+    }
+    
+    if (formContainer) formContainer.style.display = 'none';
+    successContainer.style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
   /**

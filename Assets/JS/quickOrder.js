@@ -280,10 +280,10 @@ const QuickOrder = {
   },
 
   /**
-   * Submit quick order
+   * Submit quick order via WhatsApp
    * @param {Object} formData
    */
-  async submitOrder(formData) {
+  submitOrder(formData) {
     const submitBtn = DOMUtils.getById('qo-submit-btn');
     const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
     const spinner = submitBtn ? submitBtn.querySelector('.spinner') : null;
@@ -291,54 +291,75 @@ const QuickOrder = {
     // Show loading state
     if (submitBtn) {
       submitBtn.disabled = true;
-      if (btnText) btnText.textContent = 'Processing...';
+      if (btnText) btnText.textContent = 'Opening WhatsApp...';
       if (spinner) spinner.style.display = 'inline-block';
     }
 
     // Calculate total
     const total = formData.productPrice * formData.quantity;
 
-    // Prepare order data
-    const orderData = {
-      orderId: 'QO-' + generateId().toUpperCase(),
-      customer: {
-        fullName: formData.fullName,
-        phone: formData.phone
-      },
-      product: {
-        id: formData.productId,
-        name: formData.productName,
-        price: formData.productPrice
-      },
-      quantity: formData.quantity,
-      total: total,
-      currency: CurrencyUtils.code,
-      orderDate: new Date().toISOString(),
-      type: 'quick_order',
-      status: 'pending'
-    };
+    // Format order message for WhatsApp
+    let orderMessage = `*Quick Order - Ash Meganab Herbal*%0A%0A`;
+    orderMessage += `*Customer Details:*%0A`;
+    orderMessage += `Name: ${formData.fullName}%0A`;
+    orderMessage += `Phone: ${formData.phone}%0A`;
+    orderMessage += `%0A*Order Details:*%0A`;
+    orderMessage += `Product: ${formData.productName}%0A`;
+    orderMessage += `Price: ₵${formData.productPrice}%0A`;
+    orderMessage += `Quantity: ${formData.quantity}%0A`;
+    orderMessage += `*Total: ₵${total}*%0A`;
+    orderMessage += `%0AOrder Date: ${new Date().toLocaleDateString()}`;
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // WhatsApp URL
+    const whatsappUrl = `https://wa.me/233548551667?text=${orderMessage}`;
 
-    // Store order
-    const existingOrders = StorageUtils.get('ashmeg_orders', []);
-    existingOrders.push(orderData);
-    StorageUtils.set('ashmeg_orders', existingOrders);
+    // Open WhatsApp in new tab
+    window.open(whatsappUrl, '_blank');
 
-    // Store quick order for checkout reference
-    StorageUtils.set('ashmeg_quick_order', {
-      productId: formData.productId,
-      productName: formData.productName,
-      productPrice: formData.productPrice,
-      quantity: formData.quantity
-    });
+    // Reset button
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      if (btnText) btnText.textContent = 'Place Order';
+      if (spinner) spinner.style.display = 'none';
+    }
 
-    // Show success
-    this.showSuccessMessage(orderData);
+    // Show WhatsApp confirmation
+    this.showWhatsAppConfirmation();
 
     // Reset form
     this.resetForm();
+  },
+
+  /**
+   * Show WhatsApp order confirmation
+   */
+  showWhatsAppConfirmation() {
+    const form = DOMUtils.getById('quick-order-form');
+    const successContainer = DOMUtils.getById('qo-success');
+
+    if (!successContainer) return;
+
+    const orderIdEl = DOMUtils.getById('qo-success-order-id');
+    const totalEl = DOMUtils.getById('qo-success-total');
+
+    if (orderIdEl) orderIdEl.textContent = 'WHATSAPP';
+    if (totalEl) totalEl.textContent = 'Check WhatsApp';
+
+    const successTitle = successContainer.querySelector('h3');
+    if (successTitle) successTitle.textContent = 'Opening WhatsApp...';
+
+    const successText = successContainer.querySelectorAll('p');
+    if (successText[1]) {
+      successText[1].innerHTML = `Your order details are being prepared.<br><br>
+        <strong>Please complete your order in the WhatsApp chat window.</strong><br><br>
+        If WhatsApp doesn't open automatically, <a href="https://wa.me/233548551667" target="_blank">click here</a> to open WhatsApp.`;
+    }
+
+    if (form) form.style.display = 'none';
+    successContainer.style.display = 'block';
+
+    // Scroll to success message
+    successContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
   },
 
   /**
