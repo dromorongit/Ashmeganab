@@ -43,202 +43,88 @@ const ProductCategories = {
  * Product Data - Complete Catalog
  */
 const ProductsData = [
-  // CardioNab Products
-  {
-    id: 'cardionab-001',
-    name: 'CardioNab Premium',
-    category: 'cardionab',
-    categoryName: 'CardioNab',
-    price: 150.00,
-    unit: 'pack',
-    description: 'Advanced cardiovascular support formula with hawthorn and garlic extract. Promotes healthy blood pressure and heart function.',
-    benefits: [
-      'Supports healthy blood pressure',
-      'Promotes cardiovascular wellness',
-      'Natural antioxidant properties',
-      'Improves blood circulation'
-    ],
-    usage: 'Take 2 capsules daily with food',
-    image: 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&h=400&fit=crop',
-    featured: true,
-    bestseller: true
-  },
-  {
-    id: 'cardionab-002',
-    name: 'CardioNab Basic',
-    category: 'cardionab',
-    categoryName: 'CardioNab',
-    price: 85.00,
-    unit: 'pack',
-    description: 'Essential cardiovascular support for everyday heart health maintenance.',
-    benefits: [
-      'Maintains heart health',
-      'Supports healthy cholesterol levels',
-      'Natural ingredients',
-      'Easy to take'
-    ],
-    usage: 'Take 1-2 capsules daily',
-    image: 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&h=400&fit=crop',
-    featured: false,
-    bestseller: false
-  },
-
-  // DiaoNab Products
-  {
-    id: 'dianab-001',
-    name: 'DiaoNab Digest Formula',
-    category: 'dianab',
-    categoryName: 'DiaoNab',
-    price: 120.00,
-    unit: 'pack',
-    description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts.',
-    benefits: [
-      'Relieves digestive discomfort',
-      'Reduces bloating and gas',
-      'Supports healthy gut flora',
-      'Promotes regular digestion'
-    ],
-    usage: 'Take 1 capsule after meals',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop',
-    featured: true,
-    bestseller: true
-  },
-  {
-    id: 'dianab-002',
-    name: 'DiaoNab Colon Cleanse',
-    category: 'dianab',
-    categoryName: 'DiaoNab',
-    price: 95.00,
-    unit: 'pack',
-    description: 'Gentle colon cleansing formula with natural fiber and probiotics.',
-    benefits: [
-      'Supports colon health',
-      'Natural fiber supplement',
-      'Promotes regularity',
-      'Enhances nutrient absorption'
-    ],
-    usage: 'Take 2 capsules with plenty of water',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop',
-    featured: false,
-    bestseller: false
-  },
-  {
-    id: 'dianab-003',
-    name: 'DiaoNab Stomach Calm',
-    category: 'dianab',
-    categoryName: 'DiaoNab',
-    price: 75.00,
-    unit: 'pack',
-    description: 'Soothing stomach relief formula for quick digestive comfort.',
-    benefits: [
-      'Relieves stomach upset',
-      'Reduces nausea',
-      'Calms digestive spasms',
-      'Fast-acting relief'
-    ],
-    usage: 'Take 1-2 capsules as needed',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop',
-    featured: false,
-    bestseller: false
-  },
-
-  // ProstaNab Products
+  // ProstaNab Natural Tablets
   {
     id: 'prostanab-001',
-    name: 'ProstaNab Maximum',
+    name: 'ProstaNab Natural Tablets',
     category: 'prostanab',
     categoryName: 'ProstaNab',
     price: 180.00,
     unit: 'pack',
-    description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol.',
+    description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol for optimal male wellness.',
     benefits: [
       'Supports prostate wellness',
       'Promotes healthy urinary function',
       'Reduces frequent urination',
       'Enhances male vitality'
     ],
-    usage: 'Take 2 capsules daily',
-    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=400&fit=crop',
+    usage: 'Take 2 tablets daily',
+    image: 'Assets/Images/prostanab.PNG',
     featured: true,
     bestseller: true
   },
+
+  // DiaoNab Natural Tablets
   {
-    id: 'prostanab-002',
-    name: 'ProstaNab Daily',
-    category: 'prostanab',
-    categoryName: 'ProstaNab',
-    price: 110.00,
+    id: 'dianab-001',
+    name: 'DiaoNab Natural Tablets',
+    category: 'dianab',
+    categoryName: 'DiaoNab',
+    price: 120.00,
     unit: 'pack',
-    description: 'Daily prostate maintenance formula for ongoing health support.',
+    description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts for gut health.',
     benefits: [
-      'Maintains prostate health',
-      'Supports hormonal balance',
-      'Natural ingredients',
-      'Easy daily regimen'
+      'Relieves digestive discomfort',
+      'Reduces bloating and gas',
+      'Supports healthy gut flora',
+      'Promotes regular digestion'
     ],
-    usage: 'Take 1 capsule daily',
-    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=400&fit=crop',
-    featured: false,
-    bestseller: false
+    usage: 'Take 1 tablet after meals',
+    image: 'Assets/Images/diaonab.PNG',
+    featured: true,
+    bestseller: true
   },
 
-  // Nabdol Products
+  // CardioNab Tablets
+  {
+    id: 'cardionab-001',
+    name: 'CardioNab Tablets',
+    category: 'cardionab',
+    categoryName: 'CardioNab',
+    price: 150.00,
+    unit: 'pack',
+    description: 'Advanced cardiovascular support formula with hawthorn and garlic extract for heart health.',
+    benefits: [
+      'Supports healthy blood pressure',
+      'Promotes cardiovascular wellness',
+      'Natural antioxidant properties',
+      'Improves blood circulation'
+    ],
+    usage: 'Take 2 tablets daily with food',
+    image: 'Assets/Images/cardionab.PNG',
+    featured: true,
+    bestseller: true
+  },
+
+  // NabDol Pain Relief
   {
     id: 'nabdol-001',
-    name: 'Nabdol Pain Relief',
+    name: 'NabDol Pain Relief',
     category: 'nabdol',
     categoryName: 'Nabdol',
     price: 95.00,
     unit: 'pack',
-    description: 'Natural pain relief formula with turmeric and boswellia extracts.',
+    description: 'Natural pain relief formula with turmeric and boswellia extracts for effective inflammation management.',
     benefits: [
       'Relieves joint pain',
       'Reduces inflammation',
       'Supports mobility',
       'Non-addictive formula'
     ],
-    usage: 'Take 2 capsules twice daily',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop',
+    usage: 'Take 2 tablets twice daily',
+    image: 'Assets/Images/nabdol.PNG',
     featured: true,
     bestseller: true
-  },
-  {
-    id: 'nabdol-002',
-    name: 'Nabdol Joint Support',
-    category: 'nabdol',
-    categoryName: 'Nabdol',
-    price: 135.00,
-    unit: 'pack',
-    description: 'Comprehensive joint health formula with glucosamine and chondroitin alternatives.',
-    benefits: [
-      'Supports joint flexibility',
-      'Promotes cartilage health',
-      'Reduces stiffness',
-      'Enhances mobility'
-    ],
-    usage: 'Take 2 capsules with food',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop',
-    featured: false,
-    bestseller: false
-  },
-  {
-    id: 'nabdol-003',
-    name: 'Nabdol Muscle Recovery',
-    category: 'nabdol',
-    categoryName: 'Nabdol',
-    price: 85.00,
-    unit: 'pack',
-    description: 'Fast muscle recovery formula with arnica and menthol.',
-    benefits: [
-      'Reduces muscle soreness',
-      'Speeds recovery',
-      'Relieves tension',
-      'Cooling sensation'
-    ],
-    usage: 'Apply topically or take 1 capsule as needed',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop',
-    featured: false,
-    bestseller: false
   }
 ];
 
