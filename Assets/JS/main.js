@@ -63,7 +63,7 @@ function initNavigation() {
     }
   });
   
-  // Handle mobile dropdown toggles - only on the parent nav-link
+  // Handle mobile dropdown toggles - only toggle on parent link, don't prevent navigation
   const navItemHasChildren = document.querySelectorAll('.nav-item-has-children');
   
   navItemHasChildren.forEach(item => {
@@ -71,8 +71,8 @@ function initNavigation() {
     if (parentLink) {
       parentLink.addEventListener('click', (e) => {
         if (window.innerWidth <= 992) {
-          e.preventDefault();
-          e.stopPropagation();
+          // Only toggle dropdown, don't prevent navigation
+          // The navigation will happen naturally
           item.classList.toggle('active');
         }
       });
@@ -101,26 +101,19 @@ function initMobileMenu() {
     document.body.style.overflow = '';
   });
   
-  // Close mobile menu when clicking on nav links
-  navMenu.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
+  // Close mobile menu when clicking on nav links - allow navigation to proceed
+  const navMenuLinks = navMenu.querySelectorAll('a');
+  navMenuLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
       if (window.innerWidth <= 992) {
-        mobileMenuBtn.classList.remove('active');
-        navMenu.classList.remove('active');
-        mobileMenuOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    });
-  });
-  
-  // Close mobile menu when clicking on dropdown items
-  navMenu.querySelectorAll('.nav-dropdown-item').forEach(link => {
-    link.addEventListener('click', () => {
-      if (window.innerWidth <= 992) {
-        mobileMenuBtn.classList.remove('active');
-        navMenu.classList.remove('active');
-        mobileMenuOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+        const href = link.getAttribute('href');
+        // Close the menu and allow navigation
+        setTimeout(() => {
+          mobileMenuBtn.classList.remove('active');
+          navMenu.classList.remove('active');
+          mobileMenuOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }, 100);
       }
     });
   });
