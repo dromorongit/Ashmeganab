@@ -140,7 +140,8 @@ const Checkout = {
     const clearBtn = DOMUtils.getById('clear-order-btn');
 
     if (decrementBtn) {
-      decrementBtn.addEventListener('click', () => {
+      decrementBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         if (this.items.length === 0) return;
         const currentQty = parseInt(quantityValue.textContent) || 1;
         if (currentQty > 1) {
@@ -150,7 +151,8 @@ const Checkout = {
     }
 
     if (incrementBtn) {
-      incrementBtn.addEventListener('click', () => {
+      incrementBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         if (this.items.length === 0) return;
         const currentQty = parseInt(quantityValue.textContent) || 1;
         if (currentQty < 99) {
