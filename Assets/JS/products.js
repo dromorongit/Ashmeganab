@@ -49,7 +49,7 @@ const ProductsData = [
     name: 'ProstaNab Natural Tablets',
     category: 'prostanab',
     categoryName: 'ProstaNab',
-    price: 180.00,
+    price: 599.00,
     unit: 'pack',
     description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol for optimal male wellness.',
     benefits: [
@@ -70,7 +70,7 @@ const ProductsData = [
     name: 'DiaoNab Natural Tablets',
     category: 'dianab',
     categoryName: 'DiaoNab',
-    price: 120.00,
+    price: 599.00,
     unit: 'pack',
     description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts for gut health.',
     benefits: [
@@ -91,7 +91,7 @@ const ProductsData = [
     name: 'CardioNab Tablets',
     category: 'cardionab',
     categoryName: 'CardioNab',
-    price: 150.00,
+    price: 599.00,
     unit: 'pack',
     description: 'Advanced cardiovascular support formula with hawthorn and garlic extract for heart health.',
     benefits: [
@@ -112,7 +112,7 @@ const ProductsData = [
     name: 'NabDol Pain Relief',
     category: 'nabdol',
     categoryName: 'Nabdol',
-    price: 95.00,
+    price: 599.00,
     unit: 'pack',
     description: 'Natural pain relief formula with turmeric and boswellia extracts for effective inflammation management.',
     benefits: [
