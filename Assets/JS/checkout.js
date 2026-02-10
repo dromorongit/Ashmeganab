@@ -75,13 +75,13 @@ const Checkout = {
    * Render order summary
    */
   renderOrderSummary() {
-    const summaryContainer = DOMUtils.getById('order-summary');
+    const checkoutSummary = DOMUtils.getById('checkout-summary');
     const emptyState = DOMUtils.getById('empty-order-state');
     const orderItemsContainer = DOMUtils.getById('order-items');
     const totalElement = DOMUtils.getById('order-total');
     const quantityControls = DOMUtils.getById('quantity-controls');
 
-    if (!summaryContainer) return;
+    if (!checkoutSummary) return;
 
     if (this.items.length === 0) {
       if (emptyState) emptyState.style.display = 'block';
