@@ -717,6 +717,13 @@
   visibility: hidden;
   transition: all var(--transition-base);
   padding: var(--spacing-lg);
+  pointer-events: none;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .modal-overlay.active {
