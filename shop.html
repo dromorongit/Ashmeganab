@@ -12,6 +12,89 @@
   <link rel="icon" type="image/jpeg" href="Assets/Images/ashmeganablogo.JPG">
   
   <link rel="stylesheet" href="Assets/CSS/main.css">
+  <style>
+    /* Mini Quick Order Card Styles */
+    .mini-quick-order-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-lg);
+      height: fit-content;
+    }
+    
+    .mini-quick-order-card h3 {
+      font-family: var(--font-secondary);
+      font-size: var(--font-size-lg);
+      color: var(--color-gray-800);
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .mini-quick-order-card h3 svg {
+      width: 20px;
+      height: 20px;
+      color: var(--color-primary);
+    }
+    
+    .mini-quick-order-form .form-group {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .mini-quick-order-form .form-group input,
+    .mini-quick-order-form .form-group select {
+      width: 100%;
+      padding: var(--spacing-sm);
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+    }
+    
+    .mini-quick-order-form .form-group input:focus,
+    .mini-quick-order-form .form-group select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    
+    .mini-quick-order-btn {
+      width: 100%;
+      padding: var(--spacing-sm);
+      margin-top: var(--spacing-sm);
+    }
+    
+    /* Shop layout with mini quick order sidebar */
+    .shop-with-quick-order {
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      gap: var(--spacing-xl);
+      padding: var(--spacing-3xl) 0;
+      align-items: start;
+    }
+    
+    @media (max-width: 1200px) {
+      .shop-with-quick-order {
+        grid-template-columns: 1fr;
+      }
+      
+      .shop-sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+      }
+      
+      .mini-quick-order-card {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .shop-sidebar {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -53,7 +136,7 @@
           <div class="search-results"></div>
         </div>
         
-        <a href="cart.html" class="cart-btn" aria-label="Shopping Cart">
+        <a href="checkout.html" class="cart-btn" aria-label="Shopping Cart">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="21" r="1"></circle>
             <circle cx="20" cy="21" r="1"></circle>
@@ -99,11 +182,11 @@
     <div class="cart-footer">
       <div class="cart-subtotal">
         <span class="cart-subtotal-label">Subtotal</span>
-        <span class="cart-subtotal-value">GH₵0.00</span>
+        <span class="cart-subtotal-value">₵0.00</span>
       </div>
       <p class="cart-shipping-note">Shipping calculated at checkout</p>
       <div class="cart-buttons">
-        <a href="cart.html" class="btn btn-secondary cart-btn-secondary">View Cart</a>
+        <a href="checkout.html" class="btn btn-secondary cart-btn-secondary">View Cart</a>
         <a href="checkout.html" class="btn btn-primary cart-btn-primary">Checkout</a>
       </div>
     </div>
@@ -122,9 +205,9 @@
     </div>
   </section>
   
-  <!-- Shop Section -->
+  <!-- Shop Section with Mini Quick Order -->
   <section class="container">
-    <div class="shop-layout">
+    <div class="shop-with-quick-order">
       <!-- Sidebar Filters -->
       <aside class="shop-sidebar">
         <div class="filter-section">
@@ -163,24 +246,6 @@
           <div class="price-range">
             <span>GH₵0</span>
             <span class="price-max">GH₵900</span>
-          </div>
-        </div>
-        
-        <div class="filter-section">
-          <h4>Rating</h4>
-          <div class="filter-list">
-            <label class="filter-item">
-              <input type="radio" name="rating" value="4">
-              <span>4 Stars & Above</span>
-            </label>
-            <label class="filter-item">
-              <input type="radio" name="rating" value="3">
-              <span>3 Stars & Above</span>
-            </label>
-            <label class="filter-item">
-              <input type="radio" name="rating" value="2">
-              <span>2 Stars & Above</span>
-            </label>
           </div>
         </div>
       </aside>
@@ -225,6 +290,35 @@
         </div>
         
         <div class="products-grid" id="shop-products-grid"></div>
+      </div>
+      
+      <!-- Mini Quick Order Card -->
+      <div class="mini-quick-order-card">
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          Quick Order
+        </h3>
+        <form class="mini-quick-order-form" id="mini-quick-order-form-shop">
+          <div class="form-group">
+            <input type="text" id="mini-name-shop" name="name" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" id="mini-phone-shop" name="phone" placeholder="Phone Number" required>
+          </div>
+          <div class="form-group">
+            <select id="mini-product-shop" name="product" required>
+              <option value="">Select Product</option>
+              <option value="cardionab">CardioNab - ₵690</option>
+              <option value="dianab">DiaoNab - ₵720</option>
+              <option value="prostanab">ProstaNab - ₵750</option>
+              <option value="nabdol">Nabdol - ₵495</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary mini-quick-order-btn">Place Order</button>
+        </form>
       </div>
     </div>
   </section>
@@ -280,12 +374,6 @@
               <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
             </svg>
           </a>
-          <a href="#" class="social-link" aria-label="YouTube">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-            </svg>
-          </a>
         </div>
       </div>
       
@@ -307,17 +395,6 @@
           <li><a href="shop.html?category=dianab" class="footer-link">DiaoNab</a></li>
           <li><a href="shop.html?category=prostanab" class="footer-link">ProstaNab</a></li>
           <li><a href="shop.html?category=nabdol" class="footer-link">Nabdol</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h4>Customer Support</h4>
-        <ul class="footer-links">
-          <li><a href="#" class="footer-link">FAQs</a></li>
-          <li><a href="#" class="footer-link">Shipping Info</a></li>
-          <li><a href="#" class="footer-link">Returns Policy</a></li>
-          <li><a href="#" class="footer-link">Track Order</a></li>
-          <li><a href="contact.html" class="footer-link">Contact Us</a></li>
         </ul>
       </div>
       
@@ -365,7 +442,7 @@
                 <button type="button">+</button>
               </div>
             </div>
-            <button type="button" class="btn btn-primary btn-lg add-to-cart-btn">Add to Cart</button>
+            <button type="button" class="btn btn-primary btn-lg add-to-cart-btn">Place Order</button>
           </form>
         </div>
       </div>
@@ -374,5 +451,52 @@
   
   <!-- JavaScript -->
   <script type="module" src="Assets/JS/main.js"></script>
+  <script>
+    // Product prices
+    const productPrices = {
+      'cardionab': { price: 690.00, name: 'CardioNab Heart Support Formula' },
+      'dianab': { price: 720.00, name: 'DiaoNab Blood Sugar Balance' },
+      'prostanab': { price: 750.00, name: 'ProstaNab Prostate Health Complex' },
+      'nabdol': { price: 495.00, name: 'Nabdol Pain Relief Complex' }
+    };
+    
+    // Initialize mini quick order form on shop page
+    document.addEventListener('DOMContentLoaded', function() {
+      const shopQuickOrderForm = document.getElementById('mini-quick-order-form-shop');
+      
+      if (shopQuickOrderForm) {
+        shopQuickOrderForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const name = shopQuickOrderForm.querySelector('input[name="name"]').value.trim();
+          const phone = shopQuickOrderForm.querySelector('input[name="phone"]').value.trim();
+          const productKey = shopQuickOrderForm.querySelector('select[name="product"]').value;
+          
+          if (!name || !phone || !productKey) {
+            alert('Please fill in all required fields.');
+            return;
+          }
+          
+          const product = productPrices[productKey];
+          
+          const orderData = {
+            product: {
+              id: productKey,
+              name: product.name,
+              price: product.price,
+              category: productKey.charAt(0).toUpperCase() + productKey.slice(1),
+              image: 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&h=400&fit=crop'
+            },
+            quantity: 1,
+            customer: { name, phone }
+          };
+          
+          localStorage.setItem('quickOrder', JSON.stringify(orderData));
+          alert('Order prepared! Redirecting to checkout...');
+          window.location.href = 'checkout.html';
+        });
+      }
+    });
+  </script>
 </body>
 </html>

@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/jpeg" href="Assets/Images/ashmeganablogo.JPG">
   
-  <link rel="stylesheet" href="Assets/CSS/main.css">
+<link rel="stylesheet" href="Assets/CSS/main.css">
   <style>
     .checkout-layout { display: grid; grid-template-columns: 1fr 400px; gap: 2rem; padding: 3rem 0; }
     .checkout-form h2 { font-family: var(--font-secondary); font-size: 1.5rem; margin-bottom: 1rem; }
@@ -26,19 +26,44 @@
     .form-group .error-message { font-size: 0.75rem; color: var(--color-error); margin-top: 0.25rem; display: none; }
     .form-group.error input, .form-group.error select { border-color: var(--color-error); }
     .form-group.error .error-message { display: block; }
+    
+    /* Single Product Order Summary */
     .order-summary { background: var(--color-white); border-radius: 12px; box-shadow: var(--shadow-md); padding: 1.5rem; height: fit-content; position: sticky; top: 100px; }
     .order-summary h3 { font-family: var(--font-secondary); font-size: 1.25rem; margin-bottom: 1rem; }
-    .order-items-list { max-height: 300px; overflow-y: auto; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-gray-200); }
-    .checkout-order-item { display: flex; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--color-gray-100); }
-    .checkout-order-item:last-child { border-bottom: none; }
-    .checkout-order-image { width: 60px; height: 60px; border-radius: 8px; overflow: hidden; }
-    .checkout-order-image img { width: 100%; height: 100%; object-fit: cover; }
-    .checkout-order-info { flex: 1; }
-    .checkout-order-info h4 { font-family: var(--font-primary); font-size: 0.875rem; font-weight: 500; color: var(--color-gray-800); }
-    .checkout-order-qty { font-size: 0.75rem; color: var(--color-gray-500); }
-    .checkout-order-price { font-weight: 600; color: var(--color-gray-800); }
-    .order-summary-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem; color: var(--color-gray-600); }
-    .order-summary-row.total { font-size: 1rem; font-weight: 700; color: var(--color-gray-900); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--color-gray-200); }
+    
+    /* Single Product Display */
+    .single-product-display { display: flex; gap: 1rem; padding: 1rem; background: var(--color-gray-50); border-radius: 8px; margin-bottom: 1rem; }
+    .single-product-image { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .single-product-image img { width: 100%; height: 100%; object-fit: cover; }
+    .single-product-info { flex: 1; }
+    .single-product-info h4 { font-family: var(--font-primary); font-size: 0.875rem; font-weight: 600; color: var(--color-gray-800); margin-bottom: 0.25rem; }
+    .single-product-category { font-size: 0.75rem; color: var(--color-gray-500); margin-bottom: 0.5rem; }
+    .single-product-price { font-weight: 700; color: var(--color-primary); font-size: 1rem; }
+    
+    /* Quantity Controls */
+    .quantity-controls { display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0; }
+    .quantity-controls label { font-size: 0.875rem; font-weight: 500; color: var(--color-gray-700); }
+    .quantity-input { display: flex; align-items: center; border: 1px solid var(--color-gray-300); border-radius: 8px; overflow: hidden; }
+    .quantity-input button { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.125rem; background: var(--color-gray-100); border: none; cursor: pointer; transition: all 0.2s; }
+    .quantity-input button:hover { background: var(--color-gray-200); }
+    .quantity-input input { width: 50px; height: 36px; border: none; text-align: center; font-size: 0.875rem; font-weight: 600; }
+    .quantity-input input:focus { outline: none; }
+    
+    /* Order Totals */
+    .order-totals { border-top: 1px solid var(--color-gray-200); padding-top: 1rem; margin-top: 1rem; }
+    .order-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem; color: var(--color-gray-600); }
+    .order-row.total { font-size: 1.125rem; font-weight: 700; color: var(--color-gray-900); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--color-gray-200); }
+    
+    /* Clear Order Button */
+    .clear-order-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--color-error); background: none; border: 1px solid var(--color-error); border-radius: 6px; cursor: pointer; transition: all 0.2s; margin-bottom: 1rem; }
+    .clear-order-btn:hover { background: var(--color-error); color: white; }
+    
+    /* Empty Cart Message */
+    .empty-cart-message { text-align: center; padding: 3rem 1rem; }
+    .empty-cart-message svg { width: 64px; height: 64px; color: var(--color-gray-400); margin-bottom: 1rem; }
+    .empty-cart-message h3 { font-family: var(--font-secondary); font-size: 1.25rem; color: var(--color-gray-800); margin-bottom: 0.5rem; }
+    .empty-cart-message p { color: var(--color-gray-500); margin-bottom: 1.5rem; }
+    
     .payment-methods-list { display: flex; flex-direction: column; gap: 0.75rem; }
     .payment-method { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--color-gray-300); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
     .payment-method:hover { border-color: var(--color-primary); }
@@ -46,6 +71,7 @@
     .payment-method label { font-size: 0.875rem; color: var(--color-gray-700); cursor: pointer; }
     .place-order-btn { width: 100%; margin-top: 1.5rem; padding: 1rem; font-size: 1rem; }
     .country-display { padding: 0.75rem; background: var(--color-gray-100); border-radius: 8px; color: var(--color-gray-800); font-weight: 500; }
+    
     @media (max-width: 992px) { .checkout-layout { grid-template-columns: 1fr; } .order-summary { position: static; } }
     @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
   </style>
@@ -77,7 +103,7 @@
       </nav>
       
       <div class="header-actions">
-        <a href="cart.html" class="cart-btn" aria-label="Shopping Cart">
+        <a href="checkout.html" class="cart-btn" aria-label="Shopping Cart">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="9" cy="21" r="1"></circle>
             <circle cx="20" cy="21" r="1"></circle>
@@ -103,7 +129,7 @@
       <div class="breadcrumb">
         <a href="index.html">Home</a>
         <span>/</span>
-        <a href="cart.html">Cart</a>
+        <a href="shop.html">Shop</a>
         <span>/</span>
         <span>Checkout</span>
       </div>
@@ -113,122 +139,153 @@
   <!-- Checkout Section -->
   <section class="container">
     <div class="checkout-layout">
+      <!-- Order Form -->
       <form class="checkout-form" id="checkout-form">
-        <!-- Shipping Information -->
+        <!-- Customer Information -->
         <div class="checkout-section">
-          <h3>Shipping Information</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="firstName">First Name <span class="required">*</span></label>
-              <input type="text" id="firstName" name="firstName" required>
-              <span class="error-message">First name is required</span>
-            </div>
-            <div class="form-group">
-              <label for="lastName">Last Name <span class="required">*</span></label>
-              <input type="text" id="lastName" name="lastName" required>
-              <span class="error-message">Last name is required</span>
-            </div>
+          <h3>Customer Information</h3>
+          <div class="form-group">
+            <label for="fullName">Full Name <span class="required">*</span></label>
+            <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+            <span class="error-message">Full name is required</span>
           </div>
           <div class="form-row">
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email">
-            </div>
             <div class="form-group">
               <label for="phone">Phone Number <span class="required">*</span></label>
-              <input type="tel" id="phone" name="phone" required>
+              <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
               <span class="error-message">Phone number is required</span>
             </div>
+            <div class="form-group">
+              <label for="email">Email Address (Optional)</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email">
+            </div>
           </div>
+        </div>
+        
+        <!-- Delivery Information -->
+        <div class="checkout-section">
+          <h3>Delivery Information</h3>
           <div class="form-group">
-            <label for="address">Street Address <span class="required">*</span></label>
-            <input type="text" id="address" name="address" required>
-            <span class="error-message">Address is required</span>
+            <label for="address">Delivery Address <span class="required">*</span></label>
+            <input type="text" id="address" name="address" required placeholder="Enter your delivery address">
+            <span class="error-message">Delivery address is required</span>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label for="city">City <span class="required">*</span></label>
-              <input type="text" id="city" name="city" required>
+              <input type="text" id="city" name="city" required placeholder="Enter your city">
               <span class="error-message">City is required</span>
             </div>
             <div class="form-group">
-              <label for="zip">Postal Code <span class="required">*</span></label>
-              <input type="text" id="zip" name="zip" required>
-              <span class="error-message">Postal code is required</span>
+              <label for="notes">Additional Notes (Optional)</label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Any special delivery instructions..."></textarea>
             </div>
           </div>
           <div class="form-group">
-            <label>Country <span class="required">*</span></label>
+            <label>Country</label>
             <div class="country-display">Ghana</div>
             <input type="hidden" id="country" name="country" value="Ghana">
           </div>
         </div>
         
-        <!-- Shipping Method -->
-        <div class="checkout-section">
-          <h3>Shipping Method</h3>
-          <div class="payment-methods-list">
-            <label class="payment-method">
-              <input type="radio" name="shipping" value="standard" checked>
-              <span>Standard Shipping (5-7 business days)</span>
-              <span style="margin-left: auto; font-weight: 600;">GH₵120.00</span>
-            </label>
-            <label class="payment-method">
-              <input type="radio" name="shipping" value="express">
-              <span>Express Shipping (2-3 business days)</span>
-              <span style="margin-left: auto; font-weight: 600;">GH₵200.00</span>
-            </label>
-            <label class="payment-method">
-              <input type="radio" name="shipping" value="free">
-              <span>Free Shipping (Orders over GH₵1,125)</span>
-              <span style="margin-left: auto; font-weight: 600;">FREE</span>
-            </label>
-          </div>
-        </div>
-        
-        <!-- Payment Method -->
+        <!-- Payment Method (Payment on Delivery Only) -->
         <div class="checkout-section">
           <h3>Payment Method</h3>
-          <div class="payment-methods-list">
-            <label class="payment-method">
-              <input type="radio" name="payment" value="card" checked>
-              <span>Credit/Debit Card</span>
-            </label>
-            <label class="payment-method">
-              <input type="radio" name="payment" value="mobilemoney">
-              <span>Mobile Money (MTN, Vodafone, AirtelTigo)</span>
-            </label>
+          <div class="payment-info-box" style="background: var(--color-gray-50); padding: 1rem; border-radius: 8px; border: 1px solid var(--color-gray-200);">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+              <div>
+                <p style="font-weight: 600; color: var(--color-gray-800); margin-bottom: 0.25rem;">Payment on Delivery</p>
+                <p style="font-size: 0.875rem; color: var(--color-gray-600);">Pay when your order is delivered to your doorstep</p>
+              </div>
+            </div>
           </div>
+          <input type="hidden" name="payment" value="delivery">
         </div>
         
         <!-- Order Notes -->
         <div class="checkout-section">
           <h3>Order Notes (Optional)</h3>
           <div class="form-group">
-            <label for="notes">Special Instructions</label>
-            <textarea id="notes" name="notes" rows="3" placeholder="Any special delivery instructions or notes about your order..."></textarea>
+            <label for="orderNotes">Special Instructions</label>
+            <textarea id="orderNotes" name="orderNotes" rows="3" placeholder="Any special instructions about your order..."></textarea>
           </div>
         </div>
       </form>
       
-      <!-- Order Summary -->
+      <!-- Single Product Order Summary -->
       <aside class="order-summary">
-        <h3>Order Summary</h3>
-        <div class="order-items-list" id="checkout-order-items">
-          <!-- Order items will be rendered here -->
+        <h3>Your Order</h3>
+        
+        <!-- Empty State -->
+        <div class="empty-cart-message" id="empty-cart-message" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <h3>No Product Selected</h3>
+          <p>Go back to shop and select a product to place your order.</p>
+          <a href="shop.html" class="btn btn-primary">Browse Products</a>
         </div>
-        <div class="order-summary-row">
-          <span>Subtotal</span>
-          <span id="order-subtotal">GH₵0.00</span>
+        
+        <!-- Single Product Display -->
+        <div id="single-product-container">
+          <button class="clear-order-btn" id="clear-order-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Clear Order
+          </button>
+          
+          <div class="single-product-display" id="single-product-display">
+            <div class="single-product-image">
+              <img id="product-image" src="" alt="Product Image">
+            </div>
+            <div class="single-product-info">
+              <h4 id="product-name">Product Name</h4>
+              <p class="single-product-category" id="product-category">Category</p>
+              <p class="single-product-price" id="product-price">₵0.00</p>
+            </div>
+          </div>
+          
+          <!-- Quantity Controls -->
+          <div class="quantity-controls">
+            <label>Quantity:</label>
+            <div class="quantity-input">
+              <button type="button" id="qty-decrement">-</button>
+              <input type="number" id="product-quantity" value="1" min="1" max="10" readonly>
+              <button type="button" id="qty-increment">+</button>
+            </div>
+          </div>
+          
+          <!-- Order Totals -->
+          <div class="order-totals">
+            <div class="order-row">
+              <span>Unit Price</span>
+              <span id="unit-price">₵0.00</span>
+            </div>
+            <div class="order-row">
+              <span>Quantity</span>
+              <span id="qty-display">1</span>
+            </div>
+            <div class="order-row">
+              <span>Shipping</span>
+              <span id="shipping-cost">₵0.00</span>
+            </div>
+            <div class="order-row total">
+              <span>Total Amount</span>
+              <span id="order-total">₵0.00</span>
+            </div>
+          </div>
         </div>
-        <div class="order-summary-row">
-          <span>Shipping</span>
-          <span id="order-shipping">GH₵120.00</span>
-        </div>
-        <div class="order-summary-row total">
-          <span>Total</span>
-          <span id="order-total">GH₵0.00</span>
-        </div>
+        
         <button type="submit" form="checkout-form" class="btn btn-primary place-order-btn">Place Order</button>
         <p style="font-size: 0.75rem; color: var(--color-gray-500); text-align: center; margin-top: 1rem;">Your personal data will be used to process your order and support your experience on our website.</p>
       </aside>
@@ -250,5 +307,187 @@
   
   <!-- JavaScript -->
   <script type="module" src="Assets/JS/main.js"></script>
+  <script>
+    // Product prices for quick calculation
+    const productPrices = {
+      'cardionab': { price: 690.00, name: 'CardioNab Heart Support Formula' },
+      'dianab': { price: 720.00, name: 'DiaoNab Blood Sugar Balance' },
+      'prostanab': { price: 750.00, name: 'ProstaNab Prostate Health Complex' },
+      'nabdol': { price: 495.00, name: 'Nabdol Pain Relief Complex' }
+    };
+    
+    // Selected product data
+    let selectedProduct = null;
+    let quantity = 1;
+    const shippingCost = 50.00; // Fixed shipping cost
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadSelectedProduct();
+      initQuantityControls();
+      initClearOrder();
+      initCheckoutForm();
+    });
+    
+    // Load selected product from localStorage
+    function loadSelectedProduct() {
+      const stored = localStorage.getItem('selectedProduct');
+      if (stored) {
+        selectedProduct = JSON.parse(stored);
+        displayProduct(selectedProduct);
+      } else {
+        showEmptyState();
+      }
+    }
+    
+    // Display the selected product
+    function displayProduct(product) {
+      document.getElementById('empty-cart-message').style.display = 'none';
+      document.getElementById('single-product-container').style.display = 'block';
+      
+      document.getElementById('product-image').src = product.image || 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&h=400&fit=crop';
+      document.getElementById('product-name').textContent = product.name;
+      document.getElementById('product-category').textContent = product.category;
+      document.getElementById('product-price').textContent = '₵' + product.price.toFixed(2);
+      document.getElementById('unit-price').textContent = '₵' + product.price.toFixed(2);
+      
+      quantity = 1;
+      document.getElementById('product-quantity').value = quantity;
+      document.getElementById('qty-display').textContent = quantity;
+      
+      updateTotals();
+    }
+    
+    // Show empty state when no product selected
+    function showEmptyState() {
+      document.getElementById('empty-cart-message').style.display = 'block';
+      document.getElementById('single-product-container').style.display = 'none';
+    }
+    
+    // Initialize quantity controls
+    function initQuantityControls() {
+      const decrementBtn = document.getElementById('qty-decrement');
+      const incrementBtn = document.getElementById('qty-increment');
+      const quantityInput = document.getElementById('product-quantity');
+      
+      decrementBtn?.addEventListener('click', function() {
+        if (selectedProduct && quantity > 1) {
+          quantity--;
+          quantityInput.value = quantity;
+          document.getElementById('qty-display').textContent = quantity;
+          updateTotals();
+        }
+      });
+      
+      incrementBtn?.addEventListener('click', function() {
+        if (selectedProduct && quantity < 10) {
+          quantity++;
+          quantityInput.value = quantity;
+          document.getElementById('qty-display').textContent = quantity;
+          updateTotals();
+        }
+      });
+    }
+    
+    // Calculate and update totals
+    function updateTotals() {
+      if (!selectedProduct) return;
+      
+      const subtotal = selectedProduct.price * quantity;
+      const total = subtotal + shippingCost;
+      
+      document.getElementById('shipping-cost').textContent = '₵' + shippingCost.toFixed(2);
+      document.getElementById('order-total').textContent = '₵' + total.toFixed(2);
+    }
+    
+    // Initialize clear order button
+    function initClearOrder() {
+      document.getElementById('clear-order-btn')?.addEventListener('click', function() {
+        localStorage.removeItem('selectedProduct');
+        selectedProduct = null;
+        showEmptyState();
+      });
+    }
+    
+    // Initialize checkout form
+    function initCheckoutForm() {
+      const form = document.getElementById('checkout-form');
+      
+      form?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!selectedProduct) {
+          alert('Please select a product from the shop first.');
+          window.location.href = 'shop.html';
+          return;
+        }
+        
+        // Validate required fields
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        
+        if (!fullName || !phone || !address || !city) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+        
+        // Collect order data
+        const orderData = {
+          product: selectedProduct,
+          quantity: quantity,
+          unitPrice: selectedProduct.price,
+          subtotal: selectedProduct.price * quantity,
+          shipping: shippingCost,
+          total: (selectedProduct.price * quantity) + shippingCost,
+          customer: {
+            fullName: fullName,
+            phone: phone,
+            email: document.getElementById('email').value.trim(),
+            address: address,
+            city: city,
+            notes: document.getElementById('notes').value.trim(),
+            country: 'Ghana'
+          },
+          paymentMethod: document.querySelector('input[name="payment"]:checked')?.value || 'mobilemoney',
+          orderNotes: document.getElementById('orderNotes').value.trim(),
+          orderDate: new Date().toISOString()
+        };
+        
+        // Show success message
+        showOrderConfirmation(orderData);
+      });
+    }
+    
+    // Show order confirmation
+    function showOrderConfirmation(orderData) {
+      const layout = document.querySelector('.checkout-layout');
+      const total = orderData.total.toFixed(2);
+      
+      layout.innerHTML = `
+        <div style="text-align: center; padding: 4rem 2rem; max-width: 600px; margin: 0 auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2rem;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="16 10 11 15 8 12"></polyline>
+          </svg>
+          <h2 style="font-family: var(--font-secondary); font-size: 2rem; margin-bottom: 1rem;">Order Confirmed!</h2>
+          <p style="color: #6c757d; margin-bottom: 1.5rem;">Thank you for your order, ${orderData.customer.fullName}!</p>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+            <p style="margin-bottom: 0.5rem;"><strong>Order Total:</strong> ₵${total}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Product:</strong> ${orderData.product.name}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Quantity:</strong> ${orderData.quantity}</p>
+            <p style="margin-bottom: 0.5rem;"><strong>Delivery:</strong> ${orderData.customer.address}, ${orderData.customer.city}</p>
+            <p style="margin-bottom: 0;"><strong>Phone:</strong> ${orderData.customer.phone}</p>
+          </div>
+          <p style="color: #6c757d; margin-bottom: 2rem;">We will contact you shortly to confirm your order and arrange delivery.</p>
+          <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+        </div>
+      `;
+      
+      // Clear localStorage
+      localStorage.removeItem('selectedProduct');
+    }
+  </script>
 </body>
 </html>

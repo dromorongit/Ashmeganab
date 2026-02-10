@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEffects();
   initAnimations();
   initPageSpecific();
+  
+  // Initialize quick order form if exists
+  initQuickOrderForm();
 });
 
 // ===================================
@@ -207,7 +210,7 @@ function initCartDrawer() {
     }
     
     if (e.target.closest('.cart-btn-secondary')) {
-      window.location.href = 'cart.html';
+      window.location.href = 'checkout.html';
     }
   });
   
@@ -294,11 +297,8 @@ function initPageSpecific() {
     case 'shop.html':
       initShopPage();
       break;
-    case 'cart.html':
-      initCartPage();
-      break;
     case 'checkout.html':
-      initCheckoutPage();
+      // Checkout has its own inline script
       break;
     case 'contact.html':
       initContactPage();
@@ -317,7 +317,7 @@ function initHomepage() {
 }
 
 // ===================================
-// Product Card HTML Generator
+// Product Card HTML Generator (Place Order instead of Add to Cart)
 // ===================================
 
 function generateProductCard(product) {
@@ -345,11 +345,10 @@ function generateProductCard(product) {
               <circle cx="12" cy="12" r="3"></circle>
             </svg>
           </button>
-          <button class="product-action-btn add-to-cart-btn" data-id="${product.id}" title="Add to Cart">
+          <button class="product-action-btn place-order-btn" data-id="${product.id}" title="Place Order">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="21" r="1"></circle>
-              <circle cx="20" cy="21" r="1"></circle>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
           </button>
         </div>
@@ -367,7 +366,7 @@ function generateProductCard(product) {
           <span class="current-price">${formatProductPrice(product.price)}</span>
           ${product.originalPrice ? `<span class="original-price">${formatProductPrice(product.originalPrice)}</span>` : ''}
         </div>
-        <button class="product-btn add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
+        <button class="product-btn place-order-btn" data-id="${product.id}">Place Order</button>
       </div>
     </div>
   `;
@@ -384,8 +383,8 @@ function renderFeaturedProducts() {
   const featured = getFeaturedProducts(4);
   container.innerHTML = featured.map(product => generateProductCard(product)).join('');
   
-  container.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-    btn.addEventListener('click', handleAddToCart);
+  container.querySelectorAll('.place-order-btn').forEach(btn => {
+    btn.addEventListener('click', handlePlaceOrder);
   });
 }
 
@@ -466,18 +465,131 @@ function initTestimonialsSlider() {
 }
 
 // ===================================
-// Add to Cart Handler
+// Place Order Handler (replaces Add to Cart)
 // ===================================
 
-function handleAddToCart(e) {
-  const productId = parseInt(e.target.dataset.id || e.target.closest('.add-to-cart-btn').dataset.id);
+function handlePlaceOrder(e) {
+  const productId = parseInt(e.target.dataset.id || e.target.closest('.place-order-btn').dataset.id);
   const product = getProductById(productId);
   
   if (product) {
-    import('./cart.js').then(({ addToCart }) => {
-      addToCart(product, 1);
-    });
+    // Store selected product in localStorage
+    const selectedProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      category: product.categoryName,
+      categoryId: product.category,
+      image: product.image
+    };
+    
+    localStorage.setItem('selectedProduct', JSON.stringify(selectedProduct));
+    
+    // Redirect to checkout
+    window.location.href = 'checkout.html';
   }
+}
+
+// ===================================
+// Quick Order Form
+// ===================================
+
+function initQuickOrderForm() {
+  const form = document.getElementById('quick-order-form');
+  if (!form) return;
+  
+  const productSelect = document.getElementById('quick-product');
+  const quantityInput = document.getElementById('quick-quantity');
+  const totalDisplay = document.getElementById('quick-total');
+  
+  // Product prices
+  const prices = {
+    'cardionab': 690.00,
+    'dianab': 720.00,
+    'prostanab': 750.00,
+    'nabdol': 495.00
+  };
+  
+  // Update total when product or quantity changes
+  function updateTotal() {
+    const product = productSelect?.value;
+    const quantity = parseInt(quantityInput?.value) || 1;
+    
+    if (product && prices[product]) {
+      const total = prices[product] * quantity;
+      totalDisplay.textContent = '₵' + total.toFixed(2);
+    } else {
+      totalDisplay.textContent = '₵0.00';
+    }
+  }
+  
+  productSelect?.addEventListener('change', updateTotal);
+  quantityInput?.addEventListener('input', updateTotal);
+  
+  // Quantity buttons
+  form.querySelectorAll('.qty-decrement').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qty = parseInt(quantityInput.value);
+      if (qty > 1) {
+        quantityInput.value = qty - 1;
+        updateTotal();
+      }
+    });
+  });
+  
+  form.querySelectorAll('.qty-increment').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qty = parseInt(quantityInput.value);
+      if (qty < 10) {
+        quantityInput.value = qty + 1;
+        updateTotal();
+      }
+    });
+  });
+  
+  // Form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('quick-name')?.value.trim();
+    const phone = document.getElementById('quick-phone')?.value.trim();
+    const product = productSelect?.value;
+    const quantity = parseInt(quantityInput?.value) || 1;
+    
+    if (!name || !phone || !product) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    
+    // Create order data
+    const productNames = {
+      'cardionab': 'CardioNab Heart Support Formula',
+      'dianab': 'DiaoNab Blood Sugar Balance',
+      'prostanab': 'ProstaNab Prostate Health Complex',
+      'nabdol': 'Nabdol Pain Relief Complex'
+    };
+    
+    const orderData = {
+      product: {
+        id: product,
+        name: productNames[product],
+        price: prices[product],
+        category: product.charAt(0).toUpperCase() + product.slice(1),
+        image: 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&h=400&fit=crop'
+      },
+      quantity: quantity,
+      customer: {
+        name: name,
+        phone: phone
+      }
+    };
+    
+    // Store and redirect to checkout
+    localStorage.setItem('quickOrder', JSON.stringify(orderData));
+    
+    alert('Order prepared! Redirecting to checkout...');
+    window.location.href = 'checkout.html';
+  });
 }
 
 // ===================================
@@ -497,8 +609,8 @@ function renderShopProducts(productsToRender = products) {
   
   container.innerHTML = productsToRender.map(product => generateProductCard(product)).join('');
   
-  container.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-    btn.addEventListener('click', handleAddToCart);
+  container.querySelectorAll('.place-order-btn').forEach(btn => {
+    btn.addEventListener('click', handlePlaceOrder);
   });
   
   container.querySelectorAll('.quick-view-btn').forEach(btn => {
@@ -540,7 +652,7 @@ function initShopFilters() {
   if (priceSlider) {
     priceSlider.addEventListener('input', (e) => {
       const maxPrice = e.target.value;
-      document.querySelector('.price-max').textContent = `GH₵${maxPrice}`;
+      document.querySelector('.price-max').textContent = `₵${maxPrice}`;
     });
     
     priceSlider.addEventListener('change', (e) => {
@@ -568,7 +680,7 @@ function initShopFilters() {
 }
 
 // ===================================
-// Quick View Modal
+// Quick View Modal (Place Order instead of Add to Cart)
 // ===================================
 
 function initQuickViewModal() {
@@ -604,8 +716,8 @@ function openQuickView(productId) {
   modalContent.querySelector('.quick-view-price').textContent = formatProductPrice(product.price);
   modalContent.querySelector('.quick-view-description').textContent = product.description;
   
-  const addToCartBtn = modalContent.querySelector('.add-to-cart-btn');
-  addToCartBtn.dataset.id = product.id;
+  const placeOrderBtn = modalContent.querySelector('.place-order-btn');
+  placeOrderBtn.dataset.id = product.id;
   
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -617,249 +729,6 @@ function closeQuickView() {
     modal.classList.remove('active');
     document.body.style.overflow = '';
   }
-}
-
-// ===================================
-// Cart Page
-// ===================================
-
-function initCartPage() {
-  renderCartTable();
-  initCartPageHandlers();
-}
-
-function renderCartTable() {
-  const tbody = document.querySelector('#cart-items-body');
-  const cart = getCart();
-  
-  if (!tbody) return;
-  
-  if (cart.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" style="text-align: center; padding: 3rem;">
-          <p style="font-size: 1.125rem; color: #6c757d; margin-bottom: 1rem;">Your cart is empty</p>
-          <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
-        </td>
-      </tr>
-    `;
-    return;
-  }
-  
-  tbody.innerHTML = cart.map(item => `
-    <tr data-id="${item.id}">
-      <td>
-        <div class="cart-product">
-          <div class="cart-product-image">
-            <img src="${item.image}" alt="${item.name}">
-          </div>
-          <div class="cart-product-info">
-            <h4>${item.name}</h4>
-            <p>${item.categoryName}</p>
-          </div>
-        </div>
-      </td>
-      <td class="cart-price">${formatPrice(item.price)}</td>
-      <td>
-        <div class="cart-quantity">
-          <div class="cart-qty-input">
-            <button data-action="decrement" data-id="${item.id}">-</button>
-            <input type="number" value="${item.quantity}" min="1" readonly data-id="${item.id}">
-            <button data-action="increment" data-id="${item.id}">+</button>
-          </div>
-        </div>
-      </td>
-      <td class="cart-total">${formatPrice(item.price * item.quantity)}</td>
-      <td>
-        <button class="cart-remove-btn" data-id="${item.id}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            <line x1="10" y1="11" x2="10" y2="17"></line>
-            <line x1="14" y1="11" x2="14" y2="17"></line>
-          </svg>
-        </button>
-      </td>
-    </tr>
-  `).join('');
-  
-  updateCartTotals();
-}
-
-function updateCartTotals() {
-  const subtotal = getCartSubtotal();
-  import('./cart.js').then(({ calculateShipping, formatPrice }) => {
-    const { free, cost } = calculateShipping(subtotal);
-    const total = subtotal + cost;
-    
-    const subtotalEl = document.querySelector('#cart-subtotal');
-    const shippingEl = document.querySelector('#cart-shipping');
-    const totalEl = document.querySelector('#cart-total');
-    
-    if (subtotalEl) subtotalEl.textContent = formatPrice(subtotal);
-    if (shippingEl) shippingEl.textContent = free ? 'FREE' : formatPrice(cost);
-    if (totalEl) totalEl.textContent = formatPrice(total);
-  });
-}
-
-function initCartPageHandlers() {
-  document.addEventListener('click', (e) => {
-    if (e.target.dataset.action) {
-      const action = e.target.dataset.action;
-      const productId = parseInt(e.target.dataset.id);
-      
-      import('./cart.js').then(({ incrementQuantity, decrementQuantity }) => {
-        if (action === 'increment') {
-          incrementQuantity(productId);
-        } else if (action === 'decrement') {
-          decrementQuantity(productId);
-        }
-        renderCartTable();
-        updateCartCountBadge();
-      });
-    }
-    
-    if (e.target.closest('.cart-remove-btn')) {
-      const productId = parseInt(e.target.closest('.cart-remove-btn').dataset.id);
-      
-      import('./cart.js').then(({ removeFromCart }) => {
-        removeFromCart(productId);
-        renderCartTable();
-        updateCartCountBadge();
-      });
-    }
-  });
-  
-  const promoBtn = document.querySelector('#apply-promo');
-  const promoInput = document.querySelector('#promo-code');
-  
-  if (promoBtn && promoInput) {
-    promoBtn.addEventListener('click', () => {
-      const code = promoInput.value.trim();
-      const result = applyPromoCode(code);
-      
-      if (result.valid) {
-        const cartSubtotal = getCartSubtotal();
-        const discount = cartSubtotal * result.discount;
-        const discountEl = document.querySelector('#cart-discount');
-        
-        if (discountEl) {
-          discountEl.textContent = `-${formatPrice(discount)}`;
-          discountEl.closest('tr').style.display = 'flex';
-        }
-        
-        const totalEl = document.querySelector('#cart-total');
-        if (totalEl) {
-          const newTotal = cartSubtotal - discount;
-          totalEl.textContent = formatPrice(newTotal);
-        }
-        
-        alert(`Promo code ${result.code} applied! ${result.discount * 100}% off - You save ${formatPrice(discount)}`);
-      } else {
-        alert('Invalid promo code');
-      }
-    });
-  }
-}
-
-// ===================================
-// Checkout Page
-// ===================================
-
-function initCheckoutPage() {
-  renderCheckoutOrderSummary();
-  initCheckoutForm();
-}
-
-function renderCheckoutOrderSummary() {
-  const container = document.querySelector('#checkout-order-items');
-  const cart = getCart();
-  
-  if (!container) return;
-  
-  if (cart.length === 0) {
-    window.location.href = 'shop.html';
-    return;
-  }
-  
-  container.innerHTML = cart.map(item => `
-    <div class="checkout-order-item">
-      <div class="checkout-order-image">
-        <img src="${item.image}" alt="${item.name}">
-      </div>
-      <div class="checkout-order-info">
-        <h4>${item.name}</h4>
-        <span class="checkout-order-qty">Qty: ${item.quantity}</span>
-      </div>
-      <span class="checkout-order-price">${formatPrice(item.price * item.quantity)}</span>
-    </div>
-  `).join('');
-  
-  updateCheckoutSummary();
-}
-
-function updateCheckoutSummary() {
-  const subtotal = getCartSubtotal();
-  import('./cart.js').then(({ calculateShipping, formatPrice }) => {
-    const { free, cost } = calculateShipping(subtotal);
-    const total = subtotal + cost;
-    
-    const elements = {
-      subtotal: document.querySelector('#order-subtotal'),
-      shipping: document.querySelector('#order-shipping'),
-      total: document.querySelector('#order-total')
-    };
-    
-    if (elements.subtotal) elements.subtotal.textContent = formatPrice(subtotal);
-    if (elements.shipping) elements.shipping.textContent = free ? 'FREE' : formatPrice(cost);
-    if (elements.total) elements.total.textContent = formatPrice(total);
-  });
-}
-
-function initCheckoutForm() {
-  const form = document.querySelector('#checkout-form');
-  
-  if (!form) return;
-  
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    if (validateCheckoutForm()) {
-      const container = document.querySelector('.checkout-layout');
-      container.innerHTML = `
-        <div style="text-align: center; padding: 4rem 2rem; max-width: 600px; margin: 0 auto;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 2rem;">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="16 10 11 15 8 12"></polyline>
-          </svg>
-          <h2 style="font-family: var(--font-secondary); font-size: 2rem; margin-bottom: 1rem;">Order Confirmed!</h2>
-          <p style="color: #6c757d; margin-bottom: 2rem;">Thank you for your purchase. Your order has been confirmed and will be shipped soon.</p>
-          <a href="index.html" class="btn btn-primary">Continue Shopping</a>
-        </div>
-      `;
-      
-      import('./cart.js').then(({ clearCart }) => clearCart());
-    }
-  });
-}
-
-function validateCheckoutForm() {
-  const requiredFields = ['firstName', 'lastName', 'phone', 'address', 'city', 'zip'];
-  let isValid = true;
-  
-  requiredFields.forEach(fieldName => {
-    const field = document.querySelector(`#${fieldName}`);
-    const group = field ? field.closest('.form-group') : null;
-    
-    if (field && !field.value.trim()) {
-      if (group) group.classList.add('error');
-      isValid = false;
-    } else if (field && group) {
-      group.classList.remove('error');
-    }
-  });
-  
-  return isValid;
 }
 
 // ===================================
@@ -929,3 +798,6 @@ function applyPromoCode(code) {
     code: null
   };
 }
+
+// Export for use in other modules
+export { handlePlaceOrder };
