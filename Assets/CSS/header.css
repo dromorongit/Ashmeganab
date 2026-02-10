@@ -386,7 +386,7 @@
     padding: var(--spacing-3xl) var(--spacing-xl);
     gap: var(--spacing-md);
     transition: right var(--transition-base);
-    z-index: var(--z-modal);
+    z-index: 600; /* Higher than overlay (400) */
     overflow-y: auto;
   }
 

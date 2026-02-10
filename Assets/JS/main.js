@@ -87,13 +87,16 @@ function initNavigation() {
 function initMobileMenu() {
   if (!mobileMenuBtn || !navMenu || !mobileMenuOverlay) return;
   
-  mobileMenuBtn.addEventListener('click', () => {
+  // Toggle menu when clicking hamburger button
+  mobileMenuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     mobileMenuBtn.classList.toggle('active');
     navMenu.classList.toggle('active');
     mobileMenuOverlay.classList.toggle('active');
     document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
   });
   
+  // Close menu when clicking overlay
   mobileMenuOverlay.addEventListener('click', () => {
     mobileMenuBtn.classList.remove('active');
     navMenu.classList.remove('active');
@@ -101,23 +104,16 @@ function initMobileMenu() {
     document.body.style.overflow = '';
   });
   
-  // Close mobile menu when touching nav links - use touchstart for faster response on mobile
+  // Stop propagation on menu clicks to prevent overlay from catching them
+  navMenu.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+  
+  // Close menu when clicking on links - using mousedown for faster response
   const navMenuLinks = navMenu.querySelectorAll('a');
   navMenuLinks.forEach(link => {
-    // Use touchstart for mobile devices
-    link.addEventListener('touchstart', function(e) {
-      if (window.innerWidth <= 992) {
-        // Remove active classes immediately
-        mobileMenuBtn.classList.remove('active');
-        navMenu.classList.remove('active');
-        mobileMenuOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-        // Allow the click to propagate for navigation
-      }
-    }, { passive: true });
-    
-    // Also handle click for non-touch devices
-    link.addEventListener('click', function(e) {
+    link.addEventListener('mousedown', (e) => {
+      // Close menu on mousedown - navigation will happen on click
       if (window.innerWidth <= 992) {
         mobileMenuBtn.classList.remove('active');
         navMenu.classList.remove('active');
@@ -125,6 +121,16 @@ function initMobileMenu() {
         document.body.style.overflow = '';
       }
     });
+  });
+  
+  // Close menu when pressing Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+      mobileMenuBtn.classList.remove('active');
+      navMenu.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
   });
 }
 
