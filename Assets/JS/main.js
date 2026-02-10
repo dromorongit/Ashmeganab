@@ -101,19 +101,28 @@ function initMobileMenu() {
     document.body.style.overflow = '';
   });
   
-  // Close mobile menu when clicking on nav links - allow navigation to proceed
+  // Close mobile menu when touching nav links - use touchstart for faster response on mobile
   const navMenuLinks = navMenu.querySelectorAll('a');
   navMenuLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
+    // Use touchstart for mobile devices
+    link.addEventListener('touchstart', function(e) {
       if (window.innerWidth <= 992) {
-        const href = link.getAttribute('href');
-        // Close the menu and allow navigation
-        setTimeout(() => {
-          mobileMenuBtn.classList.remove('active');
-          navMenu.classList.remove('active');
-          mobileMenuOverlay.classList.remove('active');
-          document.body.style.overflow = '';
-        }, 100);
+        // Remove active classes immediately
+        mobileMenuBtn.classList.remove('active');
+        navMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        // Allow the click to propagate for navigation
+      }
+    }, { passive: true });
+    
+    // Also handle click for non-touch devices
+    link.addEventListener('click', function(e) {
+      if (window.innerWidth <= 992) {
+        mobileMenuBtn.classList.remove('active');
+        navMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
       }
     });
   });
