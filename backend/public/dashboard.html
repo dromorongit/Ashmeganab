@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Ash Meganab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="https://ashmeganab.com/Assets/Images/ashmeganablogo.PNG" alt="Logo" class="sidebar-logo">
+        <h2>Ash Meganab</h2>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="orders">
+          <span class="nav-icon">📦</span>
+          <span>Orders</span>
+        </a>
+        <a href="#" class="nav-item" data-page="stats">
+          <span class="nav-icon">📊</span>
+          <span>Statistics</span>
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="nav-item logout">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <h1>Order Management</h1>
+        <div class="header-actions">
+          <button id="export-excel-btn" class="btn btn-success">Export Excel</button>
+          <button id="export-pdf-btn" class="btn btn-danger">Export PDF</button>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <section class="stats-section">
+        <div class="stat-card">
+          <div class="stat-icon pending">⏳</div>
+          <div class="stat-info">
+            <span class="stat-value" id="pending-count">0</span>
+            <span class="stat-label">Pending</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon processed">📦</div>
+          <div class="stat-info">
+            <span class="stat-value" id="processed-count">0</span>
+            <span class="stat-label">Processed</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon delivered">✅</div>
+          <div class="stat-info">
+            <span class="stat-value" id="delivered-count">0</span>
+            <span class="stat-label">Delivered</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon revenue">💰</div>
+          <div class="stat-info">
+            <span class="stat-value" id="total-revenue">GHS 0</span>
+            <span class="stat-label">Total Revenue</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filters -->
+      <section class="filters-section">
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Search by name, phone, or order ID...">
+        </div>
+        <div class="filter-group">
+          <label for="status-filter">Status:</label>
+          <select id="status-filter">
+            <option value="all">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Processed">Processed</option>
+            <option value="Delivered">Delivered</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Orders Table -->
+      <section class="orders-section">
+        <div class="table-container">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody">
+              <!-- Orders will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div id="loading" class="loading">
+          <div class="spinner"></div>
+          <p>Loading orders...</p>
+        </div>
+        
+        <div id="no-orders" class="no-orders" style="display: none;">
+          <p>No orders found</p>
+        </div>
+        
+        <div class="pagination" id="pagination">
+          <!-- Pagination controls -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div id="order-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Order Details</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body">
+        <!-- Order details will be loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button id="update-status-btn" class="btn btn-primary">Update Status</button>
+        <button class="btn btn-outline modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

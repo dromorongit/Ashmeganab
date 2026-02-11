@@ -387,10 +387,102 @@ const Checkout = {
   },
 
   /**
-   * Submit order via WhatsApp
+  * Configuration
+  */
+  config: {
+    // Backend API URL - update this after deploying to Railway
+    apiBaseUrl: 'https://your-railway-backend-url.up.railway.app/api/orders'
+  },
+
+  /**
+   * Submit order via API
    * @param {Object} customerData
    */
-  submitOrder(customerData) {
+  async submitOrder(customerData) {
+    const submitBtn = DOMUtils.getById('place-order-btn');
+    const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
+    const spinner = submitBtn ? submitBtn.querySelector('.spinner') : null;
+
+    // Show loading state
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      if (btnText) btnText.textContent = 'Processing...';
+      if (spinner) spinner.style.display = 'inline-block';
+    }
+
+    try {
+      // Prepare order data
+      const orderData = {
+        customer_full_name: customerData.fullName,
+        customer_phone: customerData.phone.replace(/\s/g, ''), // Remove spaces from phone
+        customer_email: customerData.email || undefined,
+        delivery_address: customerData.address,
+        city: customerData.city,
+        product_name: this.items[0].productName,
+        product_category: this.items[0].productCategory,
+        quantity: this.items[0].quantity,
+        unit_price_GHS: this.items[0].productPrice,
+        total_price_GHS: this.items[0].subtotal,
+        additional_notes: customerData.notes || undefined
+      };
+
+      // Submit to backend API
+      const response = await fetch(this.config.apiBaseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to submit order');
+      }
+
+      // Reset button
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        if (btnText) btnText.textContent = 'Place Order';
+        if (spinner) spinner.style.display = 'none';
+      }
+
+      // Clear pending order
+      StorageUtils.remove('ashmeg_pending_order');
+      StorageUtils.remove('ashmeg_quick_order');
+
+      // Show success
+      this.showSuccessMessage({
+        orderId: result.data.order_id,
+        total: result.data.total_price_GHS || this.items[0].subtotal
+      });
+
+    } catch (error) {
+      console.error('Order submission error:', error);
+      
+      // Reset button
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        if (btnText) btnText.textContent = 'Place Order';
+        if (spinner) spinner.style.display = 'none';
+      }
+
+      // Show error message
+      this.showFormMessage(`Failed to submit order: ${error.message}. Please try again or order via WhatsApp.`, 'error');
+
+      // Fallback to WhatsApp if API fails
+      if (confirm('API submission failed. Would you like to order via WhatsApp instead?')) {
+        this.submitOrderViaWhatsApp(customerData);
+      }
+    }
+  },
+
+  /**
+   * Submit order via WhatsApp (fallback)
+   * @param {Object} customerData
+   */
+  submitOrderViaWhatsApp(customerData) {
     const submitBtn = DOMUtils.getById('place-order-btn');
     const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
     const spinner = submitBtn ? submitBtn.querySelector('.spinner') : null;
@@ -415,9 +507,6 @@ const Checkout = {
     }
     orderMessage += `Address: ${customerData.address}%0A`;
     orderMessage += `City: ${customerData.city}%0A`;
-    if (customerData.region) {
-      orderMessage += `Region: ${customerData.region}%0A`;
-    }
     if (customerData.notes) {
       orderMessage += `Notes: ${customerData.notes}%0A`;
     }
