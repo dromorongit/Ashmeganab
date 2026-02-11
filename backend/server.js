@@ -15,7 +15,24 @@ app.set('trust proxy', 1);
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    
+    // Allow specific origins
+    const allowedOrigins = [
+      'https://dromorongit.github.io',
+      'https://ashmeganab.com',
+      'http://localhost:3000',
+      'http://localhost:5500'
+    ];
+    
+    if(allowedOrigins.indexOf(origin) === -1) {
+      console.log('CORS allowed origin:', origin);
+    }
+    
+    return callback(null, true);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));

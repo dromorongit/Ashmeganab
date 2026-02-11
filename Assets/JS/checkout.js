@@ -263,6 +263,10 @@ const Checkout = {
       city: {
         element: DOMUtils.getById('city'),
         rules: { required: true, fieldName: 'City', minLength: 2 }
+      },
+      notes: {
+        element: DOMUtils.getById('notes'),
+        rules: { required: false }
       }
     };
 
@@ -391,7 +395,7 @@ const Checkout = {
   */
   config: {
     // Backend API URL - update this after deploying to Railway
-    apiBaseUrl: 'https://your-railway-backend-url.up.railway.app/api/orders'
+    apiBaseUrl: 'https://ashmeganab-production.up.railway.app/api/orders'
   },
 
   /**

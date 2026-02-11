@@ -5,6 +5,8 @@ const Order = require('../models/orderModel');
 // @access  Public
 exports.createOrder = async (req, res) => {
   try {
+    console.log('Order request received:', JSON.stringify(req.body));
+    
     const {
       customer_full_name,
       customer_phone,
@@ -18,8 +20,18 @@ exports.createOrder = async (req, res) => {
       additional_notes
     } = req.body;
 
+    // Validate required fields
+    if (!customer_full_name || !customer_phone || !delivery_address || !city || !product_name) {
+      console.log('Missing required fields');
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields'
+      });
+    }
+
     // Calculate total price
     const total_price_GHS = quantity * unit_price_GHS;
+    console.log('Creating order with total:', total_price_GHS);
 
     // Create order
     const order = await Order.create({
@@ -35,6 +47,8 @@ exports.createOrder = async (req, res) => {
       total_price_GHS,
       additional_notes
     });
+
+    console.log('Order created successfully:', order.order_id);
 
     res.status(201).json({
       success: true,
