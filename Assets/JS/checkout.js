@@ -15,6 +15,9 @@ const Checkout = {
   /** Order total */
   total: 0,
 
+  /** Quantity button click flag */
+  quantityClickInProgress: false,
+
   /**
    * Initialize checkout page
    */
@@ -111,6 +114,7 @@ const Checkout = {
             <div class="order-item-price">${CurrencyUtils.format(item.productPrice)} × ${item.quantity}</div>
           </div>
           <div class="order-item-subtotal">${CurrencyUtils.format(item.subtotal)}</div>
+          <button class="order-item-remove" onclick="Checkout.removeItem(${index})" title="Remove item">✕</button>
         </div>
       `).join('');
     }
@@ -142,22 +146,26 @@ const Checkout = {
     if (decrementBtn) {
       decrementBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (this.items.length === 0) return;
+        if (this.quantityClickInProgress || this.items.length === 0) return;
+        this.quantityClickInProgress = true;
         const currentQty = parseInt(quantityValue.textContent) || 1;
         if (currentQty > 1) {
           this.updateQuantity(currentQty - 1);
         }
+        setTimeout(() => { this.quantityClickInProgress = false; }, 100);
       });
     }
 
     if (incrementBtn) {
       incrementBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (this.items.length === 0) return;
+        if (this.quantityClickInProgress || this.items.length === 0) return;
+        this.quantityClickInProgress = true;
         const currentQty = parseInt(quantityValue.textContent) || 1;
         if (currentQty < 99) {
           this.updateQuantity(currentQty + 1);
         }
+        setTimeout(() => { this.quantityClickInProgress = false; }, 100);
       });
     }
 
@@ -166,6 +174,21 @@ const Checkout = {
         this.clearOrder();
       });
     }
+  },
+
+  /**
+   * Remove item from order
+   * @param {number} index
+   */
+  removeItem(index) {
+    this.items.splice(index, 1);
+    if (this.items.length === 1) {
+      StorageUtils.set('ashmeg_pending_order', this.items[0]);
+    } else {
+      StorageUtils.remove('ashmeg_pending_order');
+    }
+    this.renderOrderSummary();
+    this.updateQuantityDisplay(1);
   },
 
   /**
