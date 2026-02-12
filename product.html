@@ -617,6 +617,9 @@
       } else {
         document.querySelector('.related-products-section').style.display = 'none';
       }
+      
+      // Initialize carousel after content renders
+      initCarousel();
     });
     
     // Get product content based on category
@@ -801,9 +804,6 @@ Your health matters.`,
       stopAutoSlide();
       startAutoSlide();
     }
-    
-    // Initialize carousel after content loads
-    setTimeout(initCarousel, 100);
     
     // Change main image (kept for compatibility)
     function changeImage(src, thumbnail) {
