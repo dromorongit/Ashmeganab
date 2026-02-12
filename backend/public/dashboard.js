@@ -172,23 +172,64 @@ const Dashboard = {
       // Debug log
       console.log('Stats loaded:', stats);
       
-      const pendingCount = stats.data.byStatus.find(s => s._id === 'Pending')?.count || 0;
-      const processedCount = stats.data.byStatus.find(s => s._id === 'Processed')?.count || 0;
-      const deliveredCount = stats.data.byStatus.find(s => s._id === 'Delivered')?.count || 0;
-      
-      document.getElementById('pending-count').textContent = pendingCount;
-      document.getElementById('processed-count').textContent = processedCount;
-      document.getElementById('delivered-count').textContent = deliveredCount;
-      document.getElementById('total-revenue').textContent = formatCurrency(stats.data.totalRevenue);
+      if (stats.success && stats.data && stats.data.byStatus) {
+        const pendingCount = stats.data.byStatus.find(s => s._id === 'Pending')?.count || 0;
+        const processedCount = stats.data.byStatus.find(s => s._id === 'Processed')?.count || 0;
+        const deliveredCount = stats.data.byStatus.find(s => s._id === 'Delivered')?.count || 0;
+        
+        document.getElementById('pending-count').textContent = pendingCount;
+        document.getElementById('processed-count').textContent = processedCount;
+        document.getElementById('delivered-count').textContent = deliveredCount;
+        document.getElementById('total-revenue').textContent = formatCurrency(stats.data.totalRevenue);
+      } else {
+        console.warn('Stats endpoint returned invalid data, using fallback');
+        this.loadStatsFromOrders();
+      }
 
     } catch (error) {
       console.error('Error loading stats:', error);
-      // Set default values on error
+      // Try fallback
+      this.loadStatsFromOrders();
+    }
+  },
+  
+  loadStatsFromOrders() {
+    // Fallback: Calculate stats from loaded orders
+    const tbody = document.getElementById('orders-tbody');
+    if (!tbody || !tbody.innerHTML) {
+      // No orders loaded, set defaults
       document.getElementById('pending-count').textContent = '-';
       document.getElementById('processed-count').textContent = '-';
       document.getElementById('delivered-count').textContent = '-';
       document.getElementById('total-revenue').textContent = 'GHS 0.00';
+      return;
     }
+    
+    // Parse stats from rendered orders
+    const rows = tbody.querySelectorAll('tr');
+    let pending = 0, processed = 0, delivered = 0, revenue = 0;
+    
+    rows.forEach(row => {
+      const statusBadge = row.querySelector('.status-badge');
+      const status = statusBadge ? statusBadge.textContent.trim() : '';
+      
+      // Get total from the row (5th td contains the formatted price)
+      const priceText = row.querySelectorAll('td')[4]?.textContent || 'GHS 0.00';
+      const price = parseFloat(priceText.replace(/[^0-9.-]+/g, '')) || 0;
+      
+      if (status === 'Pending') pending++;
+      else if (status === 'Processed') processed++;
+      else if (status === 'Delivered') delivered++;
+      
+      revenue += price;
+    });
+    
+    document.getElementById('pending-count').textContent = pending;
+    document.getElementById('processed-count').textContent = processed;
+    document.getElementById('delivered-count').textContent = delivered;
+    document.getElementById('total-revenue').textContent = formatCurrency(revenue);
+    
+    console.log('Fallback stats calculated:', { pending, processed, delivered, revenue });
   },
 
   async viewOrder(id) {
