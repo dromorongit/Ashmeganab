@@ -240,13 +240,16 @@
                   >
                   ${product.bestseller ? '<span class="product-badge">Bestseller</span>' : ''}
                   ${product.featured ? '<span class="product-badge" style="background: var(--gradient-primary); left: auto; right: var(--spacing-md);">Featured</span>' : ''}
+                  <div class="product-overlay">
+                    <a href="product.html?id=${product.id}" class="btn btn-primary product-overlay-btn">View Details</a>
+                    <button class="btn btn-accent product-overlay-btn place-order-btn" data-product-id="${product.id}">Place Order</button>
+                  </div>
                 </div>
                 <div class="product-info">
                   <span class="product-category">${product.categoryName}</span>
                   <h3 class="product-name">${product.name}</h3>
                   <p class="product-description">${product.description.substring(0, 80)}...</p>
                   <p class="product-price">${CurrencyUtils.format(product.price)}</p>
-                  <button class="btn btn-primary product-btn place-order-btn" data-product-id="${product.id}">Place Order</button>
                 </div>
               </article>
             `).join('');
@@ -255,6 +258,7 @@
             document.querySelectorAll('.place-order-btn').forEach(btn => {
               btn.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 const productId = this.getAttribute('data-product-id');
                 const product = ProductService.getById(productId);
                 if (product) {

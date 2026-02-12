@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- SEO Meta Tags -->
+  <title>Product Details - Ash Meganab Herbal</title>
+  <meta name="description" content="View detailed information about our natural herbal products.">
+  <meta name="robots" content="noindex, nofollow">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Product Details - Ash Meganab Herbal">
+  <meta property="og:type" content="website">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="Assets/Images/ashmeganablogo.PNG">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="Assets/CSS/styles.css">
+  <link rel="stylesheet" href="Assets/CSS/responsive.css" media="(min-width: 768px)">
+  
+  <style>
+    /* Product Detail Page Styles */
+    .product-detail-section {
+      background: var(--color-surface);
+    }
+    
+    .product-detail-grid {
+      display: grid;
+      gap: var(--spacing-2xl);
+      align-items: start;
+    }
+    
+    .product-gallery {
+      position: relative;
+    }
+    
+    .product-main-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .product-thumbnails {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+    
+    .product-thumbnail {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all var(--transition-fast);
+    }
+    
+    .product-thumbnail.active,
+    .product-thumbnail:hover {
+      border-color: var(--color-primary);
+    }
+    
+    .product-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .product-detail-info {
+      background: var(--color-surface);
+      padding: var(--spacing-xl);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .product-detail-category {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .product-detail-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: var(--spacing-lg);
+      line-height: 1.3;
+    }
+    
+    .product-detail-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .product-description-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .product-benefits {
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .product-benefits h3 {
+      font-size: 1.25rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .product-benefits ul {
+      list-style: none;
+    }
+    
+    .product-benefits li {
+      padding: var(--spacing-sm) 0;
+      padding-left: var(--spacing-lg);
+      position: relative;
+      color: var(--color-text);
+    }
+    
+    .product-benefits li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+    
+    .product-usage {
+      background: var(--color-primary-pale);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .product-usage h4 {
+      font-size: 1rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .product-usage p {
+      margin: 0;
+      color: var(--color-primary-dark);
+      font-weight: 500;
+    }
+    
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .quantity-label {
+      font-weight: 500;
+    }
+    
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      background: var(--color-surface);
+      border-radius: var(--border-radius-md);
+      border: 2px solid var(--color-border);
+    }
+    
+    .quantity-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: none;
+      font-size: 1.35rem;
+      cursor: pointer;
+      color: var(--color-primary);
+      transition: all var(--transition-fast);
+    }
+    
+    .quantity-btn:hover {
+      background: var(--color-primary-pale);
+    }
+    
+    .quantity-value {
+      width: 60px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-left: 2px solid var(--color-border);
+      border-right: 2px solid var(--color-border);
+      padding: var(--spacing-sm);
+    }
+    
+    /* Product Content Section */
+    .product-content-section {
+      background: var(--color-background);
+    }
+    
+    .product-content-grid {
+      display: grid;
+      gap: var(--spacing-2xl);
+    }
+    
+    .product-content-image {
+      width: 100%;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .product-content-text h2 {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-lg);
+      line-height: 1.3;
+    }
+    
+    .product-content-text p {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .product-features {
+      list-style: none;
+      margin-top: var(--spacing-xl);
+    }
+    
+    .product-features li {
+      padding: var(--spacing-md) 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+    
+    .product-features li::before {
+      content: '•';
+      color: var(--color-primary);
+      font-size: 1.5rem;
+    }
+    
+    /* Related Products */
+    .related-products-section {
+      background: var(--color-surface);
+    }
+    
+    .related-products-grid {
+      display: grid;
+      gap: var(--spacing-xl);
+    }
+    
+    @media (min-width: 768px) {
+      .product-detail-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .product-thumbnails {
+        justify-content: flex-start;
+      }
+      
+      .product-actions {
+        flex-direction: row;
+        align-items: center;
+      }
+      
+      .quantity-selector {
+        margin-bottom: 0;
+      }
+      
+      .product-actions .btn {
+        flex: 1;
+      }
+      
+      .product-content-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      }
+      
+      .related-products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="visually-hidden">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="header" id="header" role="banner">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="Ash Meganab Herbal Home">
+        <img src="Assets/Images/ashmeganablogo.PNG" alt="Logo" width="40" height="40">
+        <span class="logo-text">Ash Meganab</span>
+      </a>
+      
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <nav class="nav-menu" id="nav-menu" role="navigation" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="shop.html" class="nav-link">Shop</a></li>
+          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+          <li class="nav-item"><a href="checkout.html" class="nav-link nav-btn"><span>Checkout</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Product Detail Section -->
+    <section class="section product-detail-section" aria-labelledby="product-detail-title">
+      <div class="container">
+        <div class="product-detail-grid" id="product-detail-container">
+          <!-- Product details loaded via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Content Section -->
+    <section class="section product-content-section" id="product-content">
+      <div class="container">
+        <div class="product-content-grid" id="product-content-container">
+          <!-- Product content loaded via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="section related-products-section" aria-labelledby="related-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="related-title" class="section-title">Related Products</h2>
+          <p class="section-subtitle">You may also like these products</p>
+        </div>
+        
+        <div class="products-grid" id="related-products-grid">
+          <!-- Related products loaded via JavaScript -->
+        </div>
+        
+        <div class="text-center mt-2">
+          <a href="shop.html" class="btn btn-outline">View All Products</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h3 class="footer-title">About Us</h3>
+          <p>Ash Meganab Herbal - Your trusted source for natural wellness products.</p>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Products</h3>
+          <ul class="footer-links">
+            <li><a href="shop.html?category=cardionab">CardioNab</a></li>
+            <li><a href="shop.html?category=dianab">DiaoNab</a></li>
+            <li><a href="shop.html?category=prostanab">ProstaNab</a></li>
+            <li><a href="shop.html?category=nabdol">Nabdol</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Contact Info</h3>
+          <ul class="footer-links">
+            <li>📍 Ghana</li>
+            <li>📞 <a href="tel:+233548551667">+233 54 855 1667</a></li>
+            <li>💬 <a href="https://wa.me/233548551667" target="_blank" rel="noopener">WhatsApp</a></li>
+            <li>🕐 Mon-Sat: 8:30am - 5:00pm</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Ash Meganab. All Rights Reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <span>|</span>
+          <a href="#">Cookie Policy</a>
+          <span>|</span>
+          <a href="#">Terms & Conditions</a>
+        </div>
+        <p class="developer-credit">Developed by <a href="#" target="_blank" rel="noopener">Dromor Narh</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="Assets/JS/utils.js"></script>
+  <script src="Assets/JS/products.js"></script>
+  <script src="Assets/JS/main.js"></script>
+  
+  <script>
+    // Product Detail Page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get product ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      if (!productId) {
+        window.location.href = 'shop.html';
+        return;
+      }
+      
+      const product = ProductService.getById(productId);
+      if (!product) {
+        window.location.href = 'shop.html';
+        return;
+      }
+      
+      // Update page title
+      document.title = `${product.name} - Ash Meganab Herbal`;
+      
+      // Get product content based on category
+      const productContent = getProductContent(product.category);
+      
+      // Render product detail
+      const detailContainer = document.getElementById('product-detail-container');
+      detailContainer.innerHTML = `
+        <div class="product-gallery">
+          <img src="${product.image}" alt="${product.name}" class="product-main-image" id="main-image">
+          <div class="product-thumbnails">
+            <div class="product-thumbnail active" onclick="changeImage('${product.image}', this)">
+              <img src="${product.image}" alt="${product.name}">
+            </div>
+            ${productContent.images.map((img, index) => `
+              <div class="product-thumbnail" onclick="changeImage('${img}', this)">
+                <img src="${img}" alt="${product.name} ${index + 1}">
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="product-detail-info">
+          <span class="product-detail-category">${product.categoryName}</span>
+          <h1 class="product-detail-title" id="product-detail-title">${product.name}</h1>
+          <p class="product-detail-price">${CurrencyUtils.format(product.price)}</p>
+          
+          <p class="product-description-text">${product.description}</p>
+          
+          <div class="product-benefits">
+            <h3>Key Benefits</h3>
+            <ul>
+              ${product.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
+            </ul>
+          </div>
+          
+          <div class="product-usage">
+            <h4>Recommended Usage</h4>
+            <p>${product.usage}</p>
+          </div>
+          
+          <div class="product-actions">
+            <div class="quantity-selector">
+              <span class="quantity-label">Quantity:</span>
+              <div class="quantity-control">
+                <button type="button" class="quantity-btn" onclick="updateQuantity(-1)">−</button>
+                <span class="quantity-value" id="quantity-value">1</span>
+                <button type="button" class="quantity-btn" onclick="updateQuantity(1)">+</button>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-lg" onclick="placeOrder('${product.id}')">Place Order</button>
+          </div>
+        </div>
+      `;
+      
+      // Render product content section
+      const contentContainer = document.getElementById('product-content-container');
+      contentContainer.innerHTML = `
+        <div class="product-content-image">
+          <img src="${productContent.mainImage}" alt="${product.categoryName}" class="product-content-image">
+        </div>
+        <div class="product-content-text">
+          <h2>${productContent.title}</h2>
+          ${productContent.description.split('\n\n').map(para => `<p>${para}</p>`).join('')}
+          <ul class="product-features">
+            ${productContent.features.map(feature => `<li>${feature}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+      
+      // Render related products
+      const relatedContainer = document.getElementById('related-products-grid');
+      const relatedProducts = ProductService.getAll()
+        .filter(p => p.category === product.category && p.id !== product.id)
+        .slice(0, 3);
+      
+      if (relatedProducts.length > 0) {
+        relatedContainer.innerHTML = relatedProducts.map(p => `
+          <article class="product-card" data-product-id="${p.id}">
+            <div class="product-image-container">
+              <img src="${p.image}" alt="${p.name}" class="product-image" loading="lazy">
+              <div class="product-overlay">
+                <a href="product.html?id=${p.id}" class="btn btn-primary product-overlay-btn">View Details</a>
+                <button class="btn btn-accent product-overlay-btn place-order-btn" data-product-id="${p.id}">Place Order</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <span class="product-category">${p.categoryName}</span>
+              <h3 class="product-name">${p.name}</h3>
+              <p class="product-price">${CurrencyUtils.format(p.price)}</p>
+            </div>
+          </article>
+        `).join('');
+        
+        // Add click handlers
+        document.querySelectorAll('.related-products-grid .place-order-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const pid = this.getAttribute('data-product-id');
+            const p = ProductService.getById(pid);
+            if (p) {
+              const orderItem = ProductService.formatForStorage(p, 1);
+              StorageUtils.set('ashmeg_pending_order', orderItem);
+              window.location.href = 'checkout.html';
+            }
+          });
+        });
+      } else {
+        document.querySelector('.related-products-section').style.display = 'none';
+      }
+    });
+    
+    // Get product content based on category
+    function getProductContent(category) {
+      const contents = {
+        cardionab: {
+          title: 'CARDIONAB',
+          description: `Our family doesn't need us to be perfect.\n\nThey need us to be present—today, tomorrow, and for the years ahead. Don't wait until you feel some discomfort.\n\nYour heart powers every moment of your life. Every laugh shared, every conversation that matters, every plan you're working toward. It works quietly in the background, carrying you through busy days, long nights, and everything in between.\n\nCARDIONAB is thoughtfully formulated to help support heart health and healthy blood circulation as part of a balanced lifestyle. With consistent daily support, it helps you stay active, focused, and ready to show up for the people who depend on you most.\n\nBecause caring for your heart isn't just about you. It's about protecting your energy, your future, and the moments that matter—for them.`,
+          features: [
+            'Supports healthy heart function',
+            'Promotes healthy blood circulation',
+            'Natural antioxidant properties',
+            '100% herbal formulation'
+          ],
+          images: ['Assets/Images/cardionab1.jpg', 'Assets/Images/cardionab2.jpg'],
+          mainImage: 'Assets/Images/cardionab1.jpg'
+        },
+        nabdol: {
+          title: 'NABDOL',
+          description: `Getting older doesn't mean giving up movement.\n\nIf joint stiffness or muscle discomfort is slowing you down, NABDOL helps support comfort, flexibility, and everyday mobility — so you can keep living life on your terms.\n\nDon't let old injuries, accidents, or years of physical strain define your future. Your past shouldn't limit how you move today.\n\nDesigned for people who still want to work, walk, and stay active, NABDOL supports joint and muscle wellness without harsh solutions.`,
+          features: [
+            'Supports an active lifestyle',
+            'Helps maintain joint flexibility',
+            'Encourages confident movement',
+            'Thoughtfully formulated',
+            'Ideal for daily, long-term use'
+          ],
+          images: ['Assets/Images/nabdol1.jpg', 'Assets/Images/nabdol2.jpg'],
+          mainImage: 'Assets/Images/nabdol1.jpg'
+        },
+        dianab: {
+          title: 'DIAONAB',
+          description: `Supporting your body's natural balance.\n\nDiaoNab is carefully formulated to help maintain healthy digestive function and support your body's natural wellness.\n\nMade with traditional herbal ingredients known for their digestive benefits, DiaoNab helps you feel comfortable and confident every day.`,
+          features: [
+            'Supports digestive wellness',
+            'Helps maintain healthy gut function',
+            'Natural calming properties',
+            'Made with traditional herbs'
+          ],
+          images: ['Assets/Images/diaonab.PNG'],
+          mainImage: 'Assets/Images/diaoman.jpg'
+        },
+        prostanab: {
+          title: 'PROSTANAB',
+          description: `Supporting men's health naturally.\n\nProstaNab is specially formulated to support prostate health and overall male wellness.\n\nWith a blend of traditional herbs known for their beneficial properties, ProstaNab helps men maintain their health and vitality as they age.`,
+          features: [
+            'Supports prostate wellness',
+            'Promotes healthy urinary function',
+            'Natural male wellness support',
+            'Made with traditional herbs'
+          ],
+          images: ['Assets/Images/prostanab.PNG'],
+          mainImage: 'Assets/Images/prostaman.jpg'
+        }
+      };
+      
+      return contents[category] || contents.dianab;
+    }
+    
+    // Change main image
+    function changeImage(src, thumbnail) {
+      document.getElementById('main-image').src = src;
+      document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+      thumbnail.classList.add('active');
+    }
+    
+    // Update quantity
+    let currentQuantity = 1;
+    function updateQuantity(change) {
+      currentQuantity = Math.max(1, Math.min(99, currentQuantity + change));
+      document.getElementById('quantity-value').textContent = currentQuantity;
+    }
+    
+    // Place order
+    function placeOrder(productId) {
+      const product = ProductService.getById(productId);
+      if (product) {
+        const orderItem = ProductService.formatForStorage(product, currentQuantity);
+        StorageUtils.set('ashmeg_pending_order', orderItem);
+        window.location.href = 'checkout.html';
+      }
+    }
+  </script>
+</body>
+</html>
