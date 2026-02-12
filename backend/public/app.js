@@ -65,11 +65,30 @@ const api = {
   },
   
   exportExcel() {
-    return this.request('/export/excel', { method: 'GET' });
+    return this.requestBinary('/export/excel', { method: 'GET' });
   },
   
   exportPDF() {
-    return this.request('/export/pdf', { method: 'GET' });
+    return this.requestBinary('/export/pdf', { method: 'GET' });
+  },
+  
+  async requestBinary(endpoint, options = {}) {
+    const token = localStorage.getItem('adminToken');
+    
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers
+    });
+    
+    if (!response.ok) {
+      throw new Error('Export failed');
+    }
+    
+    return await response.blob();
   }
 };
 
