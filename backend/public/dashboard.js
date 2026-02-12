@@ -169,17 +169,25 @@ const Dashboard = {
     try {
       const stats = await api.getStats();
       
-      document.getElementById('pending-count').textContent = 
-        stats.data.byStatus.find(s => s._id === 'Pending')?.count || 0;
-      document.getElementById('processed-count').textContent = 
-        stats.data.byStatus.find(s => s._id === 'Processed')?.count || 0;
-      document.getElementById('delivered-count').textContent = 
-        stats.data.byStatus.find(s => s._id === 'Delivered')?.count || 0;
-      document.getElementById('total-revenue').textContent = 
-        formatCurrency(stats.data.totalRevenue);
+      // Debug log
+      console.log('Stats loaded:', stats);
+      
+      const pendingCount = stats.data.byStatus.find(s => s._id === 'Pending')?.count || 0;
+      const processedCount = stats.data.byStatus.find(s => s._id === 'Processed')?.count || 0;
+      const deliveredCount = stats.data.byStatus.find(s => s._id === 'Delivered')?.count || 0;
+      
+      document.getElementById('pending-count').textContent = pendingCount;
+      document.getElementById('processed-count').textContent = processedCount;
+      document.getElementById('delivered-count').textContent = deliveredCount;
+      document.getElementById('total-revenue').textContent = formatCurrency(stats.data.totalRevenue);
 
     } catch (error) {
       console.error('Error loading stats:', error);
+      // Set default values on error
+      document.getElementById('pending-count').textContent = '-';
+      document.getElementById('processed-count').textContent = '-';
+      document.getElementById('delivered-count').textContent = '-';
+      document.getElementById('total-revenue').textContent = 'GHS 0.00';
     }
   },
 
@@ -273,8 +281,11 @@ const Dashboard = {
     try {
       await api.updateOrderStatus(this.currentOrder._id, newStatus);
       this.closeModal();
-      this.loadOrders();
-      this.loadStats();
+      // Small delay to ensure database update completes
+      setTimeout(() => {
+        this.loadOrders();
+        this.loadStats();
+      }, 100);
       alert('Order status updated successfully');
     } catch (error) {
       console.error('Error updating status:', error);

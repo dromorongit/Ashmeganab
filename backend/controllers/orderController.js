@@ -230,18 +230,20 @@ exports.deleteOrder = async (req, res) => {
 // @access  Private (Admin)
 exports.getOrderStats = async (req, res) => {
   try {
+    // Get count by status (without totalRevenue in each group)
     const stats = await Order.aggregate([
       {
         $group: {
           _id: '$order_status',
-          count: { $sum: 1 },
-          totalRevenue: { $sum: '$total_price_GHS' }
+          count: { $sum: 1 }
         }
       }
     ]);
 
     const totalOrders = await Order.countDocuments();
-    const totalRevenue = await Order.aggregate([
+    
+    // Get total revenue as a separate calculation
+    const totalRevenueResult = await Order.aggregate([
       { $group: { _id: null, total: { $sum: '$total_price_GHS' } } }
     ]);
 
@@ -250,7 +252,7 @@ exports.getOrderStats = async (req, res) => {
       data: {
         byStatus: stats,
         totalOrders,
-        totalRevenue: totalRevenue[0]?.total || 0
+        totalRevenue: totalRevenueResult[0]?.total || 0
       }
     });
   } catch (error) {
