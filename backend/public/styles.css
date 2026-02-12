@@ -197,6 +197,7 @@ body {
   height: 50px;
   border-radius: 50%;
   margin-bottom: 10px;
+  filter: brightness(0) invert(1); /* Make logo white */
 }
 
 .sidebar-header h2 {
