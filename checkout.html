@@ -183,6 +183,11 @@
                 
                 <div class="form-section-title">Delivery Details</div>
                 
+                <div class="delivery-message" style="background: var(--color-primary-pale); padding: var(--spacing-md); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-lg);">
+                  <p style="margin: 0; color: var(--color-primary-dark); font-weight: 500;">🚚 Free Delivery Nationwide</p>
+                  <p style="margin: 4px 0 0 0; color: var(--color-primary-dark); font-size: 0.9rem;">⚡ Same Day Delivery</p>
+                </div>
+                
                 <div class="form-group">
                   <label for="address" class="form-label">Delivery Address *</label>
                   <textarea id="address" class="form-textarea" placeholder="Enter your full delivery address" required aria-required="true"></textarea>
@@ -217,6 +222,13 @@
                 <div class="form-group">
                   <label for="notes" class="form-label">Additional Notes (Optional)</label>
                   <textarea id="notes" class="form-textarea" placeholder="Any special instructions for delivery..."></textarea>
+                </div>
+                
+                <div class="form-group" style="background: #fff3cd; padding: var(--spacing-md); border-radius: var(--border-radius-md); border: 1px solid #ffc107;">
+                  <label style="display: flex; align-items: flex-start; gap: var(--spacing-md); cursor: pointer;">
+                    <input type="checkbox" id="funds-confirmation" required style="margin-top: 4px; width: 18px; height: 18px;">
+                    <span style="font-size: 0.9rem; color: #856404;">I confirm that I have the funds available for this order. I understand that if I do not have the funds, I should not place this order.</span>
+                  </label>
                 </div>
                 
                 <button type="submit" id="place-order-btn" class="btn btn-primary btn-lg place-order-btn">

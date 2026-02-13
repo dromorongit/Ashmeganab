@@ -306,6 +306,15 @@ const ValidationUtils = {
   },
 
   /**
+   * Validate checkbox is checked
+   * @param {boolean} checked
+   * @returns {boolean}
+   */
+  checkbox(checked) {
+    return checked === true;
+  },
+
+  /**
    * Get error message for validation
    * @param {string} fieldName
    * @param {Object} rules
@@ -323,6 +332,9 @@ const ValidationUtils = {
     }
     if (rules.minLength && value.length < rules.minLength) {
       return `${rules.fieldName || 'This field'} must be at least ${rules.minLength} characters`;
+    }
+    if (rules.checkbox && !this.checkbox(value)) {
+      return 'Please confirm this statement';
     }
     return null;
   }

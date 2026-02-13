@@ -267,19 +267,30 @@ const Checkout = {
       notes: {
         element: DOMUtils.getById('notes'),
         rules: { required: false }
+      },
+      fundsConfirmation: {
+        element: DOMUtils.getById('funds-confirmation'),
+        rules: { required: true, fieldName: 'Funds Confirmation', checkbox: true }
       }
     };
 
     // Real-time validation
     Object.entries(fields).forEach(([key, field]) => {
       if (field.element) {
-        field.element.addEventListener('blur', () => {
-          this.validateField(field.element, field.rules);
-        });
+        // Handle checkbox separately
+        if (field.element.type === 'checkbox') {
+          field.element.addEventListener('change', () => {
+            this.validateField(field.element, field.rules);
+          });
+        } else {
+          field.element.addEventListener('blur', () => {
+            this.validateField(field.element, field.rules);
+          });
 
-        field.element.addEventListener('input', debounce(() => {
-          this.validateField(field.element, field.rules);
-        }, 300));
+          field.element.addEventListener('input', debounce(() => {
+            this.validateField(field.element, field.rules);
+          }, 300));
+        }
       }
     });
 
@@ -323,7 +334,12 @@ const Checkout = {
    */
   validateField(element, rules) {
     const errorContainer = element.parentNode.querySelector('.form-error');
-    const value = element ? element.value.trim() : '';
+    let value = element ? element.value.trim() : '';
+    
+    // Handle checkbox validation
+    if (rules.checkbox && element && element.type === 'checkbox') {
+      value = element.checked;
+    }
 
     const error = ValidationUtils.validateField(value, rules);
 
