@@ -58,7 +58,7 @@ const ProductsData = [
       'Reduces frequent urination',
       'Enhances male vitality'
     ],
-    usage: 'Take 2 tablets daily',
+    usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
     image: 'Assets/Images/prostanab.PNG',
     featured: true,
     bestseller: true
@@ -79,7 +79,7 @@ const ProductsData = [
       'Supports healthy gut flora',
       'Promotes regular digestion'
     ],
-    usage: 'Take 1 tablet after meals',
+    usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
     image: 'Assets/Images/diaonab.PNG',
     featured: true,
     bestseller: true
@@ -100,7 +100,7 @@ const ProductsData = [
       'Natural antioxidant properties',
       'Improves blood circulation'
     ],
-    usage: 'Take 2 tablets daily with food',
+    usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
     image: 'Assets/Images/cardionab.PNG',
     featured: true,
     bestseller: true
@@ -121,7 +121,7 @@ const ProductsData = [
       'Supports mobility',
       'Non-addictive formula'
     ],
-    usage: 'Take 2 tablets twice daily',
+    usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
     image: 'Assets/Images/nabdol.PNG',
     featured: true,
     bestseller: true
