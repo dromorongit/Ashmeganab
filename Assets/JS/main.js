@@ -325,11 +325,42 @@ const CategoryFilter = {
  * Footer Collapsible Sections (Mobile)
  */
 const FooterSections = {
+  initialized: false,
+  
   init() {
+    this.setupFooterSections();
+    
+    // Re-run on window resize
+    window.addEventListener('resize', debounce(() => {
+      this.setupFooterSections();
+    }, 250));
+  },
+  
+  setupFooterSections() {
     const isMobile = window.innerWidth < 768;
     
-    if (!isMobile) return;
+    if (!isMobile) {
+      // On desktop, ensure all links are visible and remove indicators
+      const sections = DOMUtils.queryAll('.footer-section');
+      sections.forEach(section => {
+        const links = section.querySelector('.footer-links');
+        const indicator = section.querySelector('.toggle-indicator');
+        if (links) {
+          links.style.display = '';
+          links.style.maxHeight = '';
+          links.style.overflow = '';
+        }
+        if (indicator) {
+          indicator.remove();
+        }
+      });
+      this.initialized = false;
+      return;
+    }
 
+    // Already initialized on mobile, skip
+    if (this.initialized) return;
+    
     const sections = DOMUtils.queryAll('.footer-section');
     
     sections.forEach(section => {
@@ -337,6 +368,10 @@ const FooterSections = {
       const links = section.querySelector('.footer-links');
       
       if (!title || !links) return;
+
+      // Remove existing indicator if any
+      const existingIndicator = title.querySelector('.toggle-indicator');
+      if (existingIndicator) existingIndicator.remove();
 
       // Initially hide on mobile
       links.style.display = 'none';
@@ -350,18 +385,27 @@ const FooterSections = {
       // Add toggle indicator
       title.insertAdjacentHTML('beforeend', '<span class="toggle-indicator" style="float:right;">+</span>');
 
-      title.addEventListener('click', () => {
-        const isOpen = links.style.maxHeight !== '0px';
+      // Remove old click listener by cloning (clean approach)
+      const newTitle = title.cloneNode(true);
+      title.parentNode.replaceChild(newTitle, title);
+
+      // Add click handler
+      newTitle.addEventListener('click', () => {
+        const isOpen = links.style.maxHeight !== '0px' && links.style.maxHeight !== '';
+        const indicator = newTitle.querySelector('.toggle-indicator');
         
         if (isOpen) {
           links.style.maxHeight = '0';
-          title.querySelector('.toggle-indicator').textContent = '+';
+          if (indicator) indicator.textContent = '+';
         } else {
+          links.style.display = 'block';
           links.style.maxHeight = links.scrollHeight + 'px';
-          title.querySelector('.toggle-indicator').textContent = '−';
+          if (indicator) indicator.textContent = '−';
         }
       });
     });
+    
+    this.initialized = true;
   }
 };
 
