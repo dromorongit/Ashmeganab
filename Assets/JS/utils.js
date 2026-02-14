@@ -268,6 +268,10 @@ const ValidationUtils = {
    * @returns {boolean}
    */
   required(value) {
+    // Handle boolean values (from checkboxes)
+    if (typeof value === 'boolean') {
+      return value === true;
+    }
     return value !== null && value !== undefined && value.trim() !== '';
   },
 
