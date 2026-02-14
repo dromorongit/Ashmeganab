@@ -297,6 +297,8 @@ const Checkout = {
     // Form submission
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      
+      console.log('Form submitted, starting validation...');
 
       // Validate all fields
       let isValid = true;
@@ -305,6 +307,7 @@ const Checkout = {
       Object.entries(fields).forEach(([key, field]) => {
         const error = this.validateField(field.element, field.rules);
         if (error) {
+          console.log('Validation error for', key, ':', error);
           isValid = false;
         } else {
           // Handle checkbox separately
@@ -326,6 +329,7 @@ const Checkout = {
         return;
       }
 
+      console.log('Validation passed, submitting order...');
       // Submit order
       this.submitOrder(formData);
     });
@@ -338,12 +342,16 @@ const Checkout = {
    * @returns {string|null}
    */
   validateField(element, rules) {
-    const errorContainer = element.parentNode.querySelector('.form-error');
+    let errorContainer = element.parentNode.querySelector('.form-error');
     let value = element ? element.value.trim() : '';
     
-    // Handle checkbox validation
+    // Handle checkbox validation - check parent and grandparent for error container
     if (rules.checkbox && element && element.type === 'checkbox') {
       value = element.checked;
+      // For checkbox, look for error container in parent or grandparent
+      if (!errorContainer) {
+        errorContainer = element.parentElement.parentElement.querySelector('.form-error');
+      }
     }
 
     const error = ValidationUtils.validateField(value, rules);
