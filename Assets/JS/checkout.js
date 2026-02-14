@@ -307,7 +307,12 @@ const Checkout = {
         if (error) {
           isValid = false;
         } else {
-          formData[key] = field.element.value.trim();
+          // Handle checkbox separately
+          if (field.element.type === 'checkbox') {
+            formData[key] = field.element.checked;
+          } else {
+            formData[key] = field.element.value.trim();
+          }
         }
       });
 
