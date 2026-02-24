@@ -328,6 +328,13 @@ const QuickOrder = {
 
     // Reset form
     this.resetForm();
+
+    // GA4 Generate Lead Event Tracking
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'generate_lead', {
+        method: 'Quick Order Form'
+      });
+    }
   },
 
   /**

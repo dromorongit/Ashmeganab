@@ -633,6 +633,21 @@ const Checkout = {
 
     // Update page title
     document.title = 'Order Confirmed - Ash Meganab Herbal';
+
+    // GA4 Purchase Event Tracking
+    if (typeof gtag !== 'undefined' && this.items.length > 0) {
+      gtag('event', 'purchase', {
+        currency: 'GHS',
+        value: this.items[0].subtotal,
+        items: [
+          {
+            item_name: this.items[0].productName,
+            quantity: this.items[0].quantity,
+            price: this.items[0].productPrice
+          }
+        ]
+      });
+    }
   }
 };
 
