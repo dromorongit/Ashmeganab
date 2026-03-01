@@ -591,7 +591,7 @@
             <div class="product-info">
               <span class="product-category">${p.categoryName}</span>
               <h3 class="product-name">${p.name}</h3>
-              <p class="product-price">${CurrencyUtils.format(p.price)}</p>
+              <p class="product-price"><span style="text-decoration: line-through; color: var(--color-text-muted); font-size: 0.9em; margin-right: 8px;">${CurrencyUtils.format(p.price)}</span> <span style="color: var(--color-error); font-weight: bold;">${CurrencyUtils.format(ProductService.getEffectivePrice(p))}</span></p>
             </div>
           </article>
         `).join('');
