@@ -50,6 +50,7 @@ const ProductsData = [
     category: 'nabdol',
     categoryName: 'Nabdol',
     price: 599.00,
+    salePrice: 480.00,
     unit: 'pack',
     description: 'Natural pain relief formula with turmeric and boswellia extracts for effective inflammation management.',
     benefits: [
@@ -71,6 +72,7 @@ const ProductsData = [
     category: 'cardionab',
     categoryName: 'CardioNab',
     price: 599.00,
+    salePrice: 480.00,
     unit: 'pack',
     description: 'Advanced cardiovascular support formula with hawthorn and garlic extract for heart health.',
     benefits: [
@@ -92,6 +94,7 @@ const ProductsData = [
     category: 'dianab',
     categoryName: 'DiaoNab',
     price: 599.00,
+    salePrice: 480.00,
     unit: 'pack',
     description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts for gut health.',
     benefits: [
@@ -113,6 +116,7 @@ const ProductsData = [
     category: 'prostanab',
     categoryName: 'ProstaNab',
     price: 599.00,
+    salePrice: 480.00,
     unit: 'pack',
     description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol for optimal male wellness.',
     benefits: [
@@ -175,6 +179,24 @@ const ProductService = {
   },
 
   /**
+   * Get effective price (sale price if available, otherwise regular price)
+   * @param {Object} product
+   * @returns {number}
+   */
+  getEffectivePrice(product) {
+    return product.salePrice || product.price;
+  },
+
+  /**
+   * Check if product is on sale
+   * @param {Object} product
+   * @returns {boolean}
+   */
+  isOnSale(product) {
+    return product.salePrice && product.salePrice < product.price;
+  },
+
+  /**
    * Search products
    * @param {string} query
    * @returns {Array}
@@ -201,7 +223,7 @@ const ProductService = {
    * @returns {Object}
    */
   getPriceRange() {
-    const prices = ProductsData.map(p => p.price);
+    const prices = ProductsData.map(p => this.getEffectivePrice(p));
     return {
       min: Math.min(...prices),
       max: Math.max(...prices)
@@ -215,14 +237,15 @@ const ProductService = {
    * @returns {Object}
    */
   formatForStorage(product, quantity = 1) {
+    const effectivePrice = this.getEffectivePrice(product);
     return {
       productId: product.id,
       productName: product.name,
-      productPrice: product.price,
+      productPrice: effectivePrice,
       productImage: product.image,
       productCategory: product.categoryName,
       quantity: quantity,
-      subtotal: product.price * quantity
+      subtotal: effectivePrice * quantity
     };
   }
 };
@@ -233,7 +256,7 @@ const ProductService = {
 const QuickOrderProducts = ProductService.getAll().map(product => ({
   id: product.id,
   name: product.name,
-  price: product.price,
+  price: ProductService.getEffectivePrice(product),
   category: product.categoryName
 }));
 

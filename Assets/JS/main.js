@@ -246,6 +246,21 @@ const App = {
    * @returns {string}
    */
   createProductCard(product) {
+    const isOnSale = ProductService.isOnSale(product);
+    const effectivePrice = ProductService.getEffectivePrice(product);
+    
+    let priceHtml = '';
+    if (isOnSale) {
+      priceHtml = `
+        <div class="product-price">
+          <span class="original-price" style="text-decoration: line-through; color: var(--color-text-muted); font-size: 0.9em; margin-right: 8px;">${CurrencyUtils.format(product.price)}</span>
+          <span class="sale-price" style="color: var(--color-error); font-weight: bold;">${CurrencyUtils.format(effectivePrice)}</span>
+        </div>
+      `;
+    } else {
+      priceHtml = `<div class="product-price">${CurrencyUtils.format(product.price)}</div>`;
+    }
+    
     return `
       <article class="product-card" data-product-id="${product.id}">
         <div class="product-image-container">
@@ -260,7 +275,7 @@ const App = {
           <span class="product-category">${product.categoryName}</span>
           <h3 class="product-name">${product.name}</h3>
           <p class="product-description">${product.description.substring(0, 80)}...</p>
-          <div class="product-price">${CurrencyUtils.format(product.price)}</div>
+          ${priceHtml}
           <button 
             class="btn btn-primary product-btn place-order-btn"
             data-product-id="${product.id}"
