@@ -9,6 +9,13 @@
  * Product Categories Configuration
  */
 const ProductCategories = {
+  NABDOL: {
+    id: 'nabdol',
+    name: 'Nabdol',
+    slug: 'nabdol',
+    description: 'Pain relief and inflammation management',
+    icon: '🌟'
+  },
   CARDIO_NAB: {
     id: 'cardionab',
     name: 'CardioNab',
@@ -29,13 +36,6 @@ const ProductCategories = {
     slug: 'prostanab',
     description: 'Prostate health and male wellness',
     icon: '💪'
-  },
-  NABDOL: {
-    id: 'nabdol',
-    name: 'Nabdol',
-    slug: 'nabdol',
-    description: 'Pain relief and inflammation management',
-    icon: '🌟'
   }
 };
 
@@ -43,44 +43,23 @@ const ProductCategories = {
  * Product Data - Complete Catalog
  */
 const ProductsData = [
-  // ProstaNab Natural Tablets
+  // NabDol Pain Relief
   {
-    id: 'prostanab-001',
-    name: 'ProstaNab Natural Tablets',
-    category: 'prostanab',
-    categoryName: 'ProstaNab',
+    id: 'nabdol-001',
+    name: 'NabDol Pain Relief',
+    category: 'nabdol',
+    categoryName: 'Nabdol',
     price: 599.00,
     unit: 'pack',
-    description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol for optimal male wellness.',
+    description: 'Natural pain relief formula with turmeric and boswellia extracts for effective inflammation management.',
     benefits: [
-      'Supports prostate wellness',
-      'Promotes healthy urinary function',
-      'Reduces frequent urination',
-      'Enhances male vitality'
+      'Relieves joint pain',
+      'Reduces inflammation',
+      'Supports mobility',
+      'Non-addictive formula'
     ],
     usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
-    image: 'Assets/Images/prostanab.PNG',
-    featured: true,
-    bestseller: true
-  },
-
-  // DiaoNab Natural Tablets
-  {
-    id: 'dianab-001',
-    name: 'DiaoNab Natural Tablets',
-    category: 'dianab',
-    categoryName: 'DiaoNab',
-    price: 599.00,
-    unit: 'pack',
-    description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts for gut health.',
-    benefits: [
-      'Relieves digestive discomfort',
-      'Reduces bloating and gas',
-      'Supports healthy gut flora',
-      'Promotes regular digestion'
-    ],
-    usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
-    image: 'Assets/Images/diaonab.PNG',
+    image: 'Assets/Images/nabdol.PNG',
     featured: true,
     bestseller: true
   },
@@ -106,23 +85,44 @@ const ProductsData = [
     bestseller: true
   },
 
-  // NabDol Pain Relief
+  // DiaoNab Natural Tablets
   {
-    id: 'nabdol-001',
-    name: 'NabDol Pain Relief',
-    category: 'nabdol',
-    categoryName: 'Nabdol',
+    id: 'dianab-001',
+    name: 'DiaoNab Natural Tablets',
+    category: 'dianab',
+    categoryName: 'DiaoNab',
     price: 599.00,
     unit: 'pack',
-    description: 'Natural pain relief formula with turmeric and boswellia extracts for effective inflammation management.',
+    description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts for gut health.',
     benefits: [
-      'Relieves joint pain',
-      'Reduces inflammation',
-      'Supports mobility',
-      'Non-addictive formula'
+      'Relieves digestive discomfort',
+      'Reduces bloating and gas',
+      'Supports healthy gut flora',
+      'Promotes regular digestion'
     ],
     usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
-    image: 'Assets/Images/nabdol.PNG',
+    image: 'Assets/Images/diaonab.PNG',
+    featured: true,
+    bestseller: true
+  },
+
+  // ProstaNab Natural Tablets
+  {
+    id: 'prostanab-001',
+    name: 'ProstaNab Natural Tablets',
+    category: 'prostanab',
+    categoryName: 'ProstaNab',
+    price: 599.00,
+    unit: 'pack',
+    description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol for optimal male wellness.',
+    benefits: [
+      'Supports prostate wellness',
+      'Promotes healthy urinary function',
+      'Reduces frequent urination',
+      'Enhances male vitality'
+    ],
+    usage: 'Two Pills, morning & evening, 30 to 40 minutes before meals',
+    image: 'Assets/Images/prostanab.PNG',
     featured: true,
     bestseller: true
   }
