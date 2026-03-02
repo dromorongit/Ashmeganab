@@ -198,10 +198,18 @@ const Checkout = {
   updateQuantity(newQuantity) {
     if (newQuantity < 1 || newQuantity > 99) return;
 
-    // Update all items to the same quantity
+    // Update all items with new quantity and recalculate price based on quantity tier
     this.items.forEach(item => {
       item.quantity = newQuantity;
-      item.subtotal = item.productPrice * newQuantity;
+      // Get the product and recalculate price based on quantity
+      const product = ProductService.getById(item.productId);
+      if (product) {
+        const newPrice = ProductService.getEffectivePrice(product, newQuantity);
+        item.productPrice = newPrice;
+        item.subtotal = newPrice * newQuantity;
+      } else {
+        item.subtotal = item.productPrice * newQuantity;
+      }
     });
 
     // Update localStorage

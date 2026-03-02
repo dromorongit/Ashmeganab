@@ -181,10 +181,29 @@ const ProductService = {
   /**
    * Get effective price (sale price if available, otherwise regular price)
    * @param {Object} product
+   * @param {number} quantity
    * @returns {number}
    */
-  getEffectivePrice(product) {
-    return product.salePrice || product.price;
+  getEffectivePrice(product, quantity = 1) {
+    const basePrice = product.salePrice || product.price;
+    
+    // Bulk discount pricing
+    if (quantity >= 3) {
+      return 410; // 410 each for 3 or more
+    } else if (quantity === 2) {
+      return 430; // 430 each for 2
+    }
+    return basePrice; // 450 for 1
+  },
+
+  /**
+   * Get price per item based on quantity
+   * @param {Object} product
+   * @param {number} quantity
+   * @returns {number}
+   */
+  getPricePerItem(product, quantity = 1) {
+    return this.getEffectivePrice(product, quantity);
   },
 
   /**
@@ -223,7 +242,7 @@ const ProductService = {
    * @returns {Object}
    */
   getPriceRange() {
-    const prices = ProductsData.map(p => this.getEffectivePrice(p));
+    const prices = ProductsData.map(p => this.getEffectivePrice(p, 1));
     return {
       min: Math.min(...prices),
       max: Math.max(...prices)
@@ -237,7 +256,7 @@ const ProductService = {
    * @returns {Object}
    */
   formatForStorage(product, quantity = 1) {
-    const effectivePrice = this.getEffectivePrice(product);
+    const effectivePrice = this.getEffectivePrice(product, quantity);
     return {
       productId: product.id,
       productName: product.name,
