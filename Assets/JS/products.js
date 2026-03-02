@@ -50,7 +50,7 @@ const ProductsData = [
     category: 'nabdol',
     categoryName: 'Nabdol',
     price: 599.00,
-    salePrice: 480.00,
+    salePrice: 450.00,
     unit: 'pack',
     description: 'Natural pain relief formula with turmeric and boswellia extracts for effective inflammation management.',
     benefits: [
@@ -72,7 +72,7 @@ const ProductsData = [
     category: 'cardionab',
     categoryName: 'CardioNab',
     price: 599.00,
-    salePrice: 480.00,
+    salePrice: 450.00,
     unit: 'pack',
     description: 'Advanced cardiovascular support formula with hawthorn and garlic extract for heart health.',
     benefits: [
@@ -94,7 +94,7 @@ const ProductsData = [
     category: 'dianab',
     categoryName: 'DiaoNab',
     price: 599.00,
-    salePrice: 480.00,
+    salePrice: 450.00,
     unit: 'pack',
     description: 'Comprehensive digestive support with ginger, peppermint, and fennel extracts for gut health.',
     benefits: [
@@ -116,7 +116,7 @@ const ProductsData = [
     category: 'prostanab',
     categoryName: 'ProstaNab',
     price: 599.00,
-    salePrice: 480.00,
+    salePrice: 450.00,
     unit: 'pack',
     description: 'Advanced prostate health formula with saw palmetto and beta-sitosterol for optimal male wellness.',
     benefits: [
